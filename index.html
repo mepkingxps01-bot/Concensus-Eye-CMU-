@@ -396,7 +396,7 @@ let addTarget    = null;
 let hasJoined    = false;
 let ticker       = null;
 let fbState      = { status: 'idle' };
-let chiefRef     = null;
+let rulesRef     = null;
 
 // ── DEFAULT DATA ─────────────────────────────────────────
 const DEF = {
@@ -486,25 +486,17 @@ function ruleHTML(sKey, i, r) {
 function sf(sKey, i, f, el, fbKey) {
   let v = el.innerText.trim();
   if (f==='voteResult' && v.startsWith('—')) v = v.replace(/^—\s*/,'');
-  if (sKey==='chief' && chiefRef && fbKey) {
-    chiefRef.child(fbKey).update({[f]: v});
-  } else {
-    D[sKey].rules[i][f] = v; save();
-  }
+  if (rulesRef && fbKey) rulesRef.child(sKey).child(fbKey).update({[f]: v});
+  else { D[sKey].rules[i][f] = v; save(); }
 }
 function st(sKey, i, v, fbKey) {
-  if (sKey==='chief' && chiefRef && fbKey) chiefRef.child(fbKey).update({tag: v});
+  if (rulesRef && fbKey) rulesRef.child(sKey).child(fbKey).update({tag: v});
   else { D[sKey].rules[i].tag = v; save(); }
 }
 function delRule(sKey, i, fbKey) {
   if (!isAdmin) return;
-  if (sKey==='chief' && chiefRef && fbKey) {
-    chiefRef.child(fbKey).remove(); // Firebase listener will re-render
-  } else {
-    D[sKey].rules.splice(i,1); save();
-    if (activeSec===sKey) refreshPanel(sKey);
-    renderHistory();
-  }
+  if (rulesRef && fbKey) rulesRef.child(sKey).child(fbKey).remove();
+  else { D[sKey].rules.splice(i,1); save(); if(activeSec===sKey) refreshPanel(sKey); renderHistory(); }
 }
 
 // ════════════════════════════════════════════════════════
@@ -654,8 +646,8 @@ function saveNewRule() {
   const desc  = document.getElementById('add-desc').value.trim();
   const tag   = isAdmin ? document.getElementById('add-tag').value : 'รอประชุม';
   if (!title) { document.getElementById('add-title').focus(); return; }
-  if (addTarget === 'chief' && chiefRef) {
-    chiefRef.push({ title, desc, tag, voteResult: '' }); // Firebase syncs to all devices
+  if (rulesRef) {
+    rulesRef.child(addTarget).push({ title, desc, tag, voteResult: '' });
   } else {
     D[addTarget].rules.push({ title, desc, tag, voteResult: '' });
     save();
@@ -835,28 +827,36 @@ function showDone(s) {
 //  FIREBASE LISTENERS
 // ════════════════════════════════════════════════════════
 if (voteRef) {
-  // Vote state — syncs vote lobby/countdown/result across all devices
+  // Vote state
   voteRef.on('value', snap => {
     applyState(snap.val() || {status:'idle'});
   }, err => setFbBar('● Firebase error: ' + err.message, 'err'));
 
-  // Chief topics — synced so every device sees the same list
-  chiefRef = firebase.database().ref('cmu_chief_topics');
-  chiefRef.once('value', snap => {
-    if (!snap.exists()) {
-      // First run: seed Firebase with the default chief rules
-      D.chief.rules.forEach(r => {
-        const {_key, ...clean} = r;
-        chiefRef.push(clean);
+  // ALL section rules — one Firebase node per section
+  rulesRef = firebase.database().ref('cmu_rules');
+  const ALL_SECTIONS = ['ward','or','opd','handover','chief'];
+
+  ALL_SECTIONS.forEach(sKey => {
+    const ref = rulesRef.child(sKey);
+    // Seed defaults into Firebase on first run
+    ref.once('value', snap => {
+      if (!snap.exists()) {
+        D[sKey].rules.forEach(r => {
+          const {_key, ...clean} = r;
+          ref.push(clean);
+        });
+      }
+      // Live listener — all devices stay in sync
+      ref.on('value', snap2 => {
+        const val = snap2.val();
+        D[sKey].rules = val
+          ? Object.entries(val).map(([k, v]) => ({...v, _key: k}))
+          : [];
+        if (activeSec === sKey) refreshPanel(sKey);
+        // Refresh history tab if it's open and section is a history section
+        const histOpen = document.getElementById('tab-history').classList.contains('active');
+        if (histOpen && sKey !== 'chief') renderHistory();
       });
-    }
-    // Live listener — updates D.chief.rules for all devices in real-time
-    chiefRef.on('value', snap2 => {
-      const val = snap2.val();
-      D.chief.rules = val
-        ? Object.entries(val).map(([k, v]) => ({...v, _key: k}))
-        : [];
-      if (activeSec === 'chief') refreshPanel('chief');
     });
   });
 }
