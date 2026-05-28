@@ -342,11 +342,13 @@
     <input type="text" id="edit-title" placeholder="ชื่อหัวข้อ"/>
     <label>รายละเอียด</label>
     <textarea id="edit-desc" rows="3" placeholder="รายละเอียด..."></textarea>
-    <label>สถานะ</label>
-    <select id="edit-tag">
-      <option value="รอประชุม">รอประชุม</option>
-      <option value="consensus">Consensus</option>
-    </select>
+    <div id="edit-tag-group">
+      <label>สถานะ</label>
+      <select id="edit-tag">
+        <option value="รอประชุม">รอประชุม</option>
+        <option value="consensus">Consensus</option>
+      </select>
+    </div>
     <div class="form-btns">
       <button class="mbtn pri" onclick="saveEditedRule()">💾 บันทึก</button>
       <button class="mbtn sec" onclick="closeEditModal()">ยกเลิก</button>
@@ -509,7 +511,10 @@ function ruleHTML(sKey, i, r) {
         <div class="rule-title">${esc(r.title)}${vr?`&nbsp;<span class="vote-result">— ${esc(vr)}</span>`:''}</div>
         <div class="rule-desc">${esc(r.desc)}</div>
       </div>
-      <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+        <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
+        <button class="edit-btn" onclick="openEditModal('${sKey}',${i},'${r._key||''}')">✏️ แก้ไข</button>
+      </div>
     </div>`;
 }
 
@@ -699,6 +704,10 @@ function openEditModal(sKey, i, fbKey) {
   document.getElementById('edit-title').value = r.title || '';
   document.getElementById('edit-desc').value  = r.desc  || '';
   document.getElementById('edit-tag').value   = r.tag   || 'รอประชุม';
+  // Tag selector only visible for admin
+  document.getElementById('edit-tag').closest('div') || document.getElementById('edit-tag').parentElement;
+  const tagRow = document.getElementById('edit-tag-group');
+  if (tagRow) tagRow.style.display = isAdmin ? 'block' : 'none';
   document.getElementById('edit-modal').classList.add('open');
   setTimeout(() => document.getElementById('edit-title').focus(), 80);
 }
@@ -706,13 +715,14 @@ function closeEditModal() { document.getElementById('edit-modal').classList.remo
 function saveEditedRule() {
   const title = document.getElementById('edit-title').value.trim();
   const desc  = document.getElementById('edit-desc').value.trim();
-  const tag   = document.getElementById('edit-tag').value;
   if (!title) { document.getElementById('edit-title').focus(); return; }
   const { sKey, i, fbKey } = editTarget;
+  const updates = { title, desc };
+  if (isAdmin) updates.tag = document.getElementById('edit-tag').value;
   if (rulesRef && fbKey) {
-    rulesRef.child(sKey).child(fbKey).update({ title, desc, tag });
+    rulesRef.child(sKey).child(fbKey).update(updates);
   } else {
-    D[sKey].rules[i] = { ...D[sKey].rules[i], title, desc, tag };
+    D[sKey].rules[i] = { ...D[sKey].rules[i], ...updates };
     save();
     if (activeSec === sKey) refreshPanel(sKey);
     renderHistory();
