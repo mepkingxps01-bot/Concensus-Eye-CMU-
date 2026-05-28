@@ -115,7 +115,14 @@
     .vote-result-edit { color: #dc2626; font-weight: 700; border-bottom-color: #dc2626 !important; background: #fff1f1 !important; }
 
     /* ── VOTE NOW FOOTER ── */
-    .vote-footer { padding: 20px 24px; border-top: 2px dashed #e5e7eb; display: flex; justify-content: center; }
+    .panel-footer { padding: 20px 24px; border-top: 2px dashed #e5e7eb; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .add-topic-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 26px; background: #059669; color: white;
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(5,150,105,0.25);
+    }
+    .add-topic-btn:hover { background: #047857; transform: translateY(-1px); }
     .vote-now-btn {
       display: flex; align-items: center; gap: 10px;
       padding: 13px 32px; background: #7c3aed; color: white;
@@ -263,6 +270,26 @@
     <div class="pw-error" id="pw-error"></div>
     <button class="modal-btn primary"   onclick="checkPw()">ยืนยัน</button>
     <button class="modal-btn secondary" onclick="closeModal()">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- ── ADD TOPIC MODAL ── -->
+<div class="vsetup-overlay" id="add-overlay" onclick="addOverlayClick(event)">
+  <div class="vsetup-box">
+    <h3>➕ เพิ่ม Topic ใหม่</h3>
+    <label>หัวข้อ</label>
+    <input type="text" id="add-title" placeholder="ชื่อหัวข้อ" />
+    <label style="margin-top:12px;">รายละเอียด</label>
+    <textarea id="add-desc" rows="3" placeholder="รายละเอียด..." style="width:100%;padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;resize:vertical;font-family:inherit;transition:border-color 0.2s;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+    <label style="margin-top:12px;">สถานะ</label>
+    <select id="add-tag">
+      <option value="รอประชุม">รอประชุม</option>
+      <option value="consensus">Consensus</option>
+    </select>
+    <div style="display:flex;gap:10px;margin-top:22px;">
+      <button class="modal-btn primary"   onclick="saveNewRule()" style="margin:0;background:#059669;">บันทึก</button>
+      <button class="modal-btn secondary" onclick="closeAddModal()" style="margin:0;">ยกเลิก</button>
+    </div>
   </div>
 </div>
 
@@ -436,10 +463,7 @@
     document.getElementById('panel-title').textContent = sec.title;
     document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
     document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(key,i,r)).join('');
-    // Vote footer: only for chief section and admin
-    const vf = document.getElementById('vote-footer');
-    vf.innerHTML = (key === 'chief' && isAdmin)
-      ? `<div class="vote-footer"><button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button></div>` : '';
+    document.getElementById('vote-footer').innerHTML = buildFooter(key);
     const panel = document.getElementById('consensus-panel');
     panel.classList.add('visible');
     panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -449,9 +473,7 @@
     const sec = data[sKey];
     document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
     document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(sKey,i,r)).join('');
-    const vf = document.getElementById('vote-footer');
-    vf.innerHTML = (sKey === 'chief' && isAdmin)
-      ? `<div class="vote-footer"><button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button></div>` : '';
+    document.getElementById('vote-footer').innerHTML = buildFooter(sKey);
   }
 
   // ── HISTORY TAB ───────────────────────────────────────────────────────────
@@ -575,6 +597,49 @@
     document.getElementById('vote-screen').classList.remove('open');
     // refresh panel if chief is shown
     if (activeSection === 'chief') refreshPanel('chief');
+  }
+
+  // ── FOOTER BUILDER ───────────────────────────────────────────────────────
+  function buildFooter(sKey) {
+    if (!isAdmin) return '';
+    const voteBtn = sKey === 'chief'
+      ? `<button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button>` : '';
+    return `<div class="panel-footer">
+      <button class="add-topic-btn" onclick="openAddModal('${sKey}')">➕ Add Topic</button>
+      ${voteBtn}
+    </div>`;
+  }
+
+  // ── ADD TOPIC ─────────────────────────────────────────────────────────────
+  let addTargetSection = null;
+
+  function openAddModal(sKey) {
+    addTargetSection = sKey;
+    document.getElementById('add-title').value = '';
+    document.getElementById('add-desc').value  = '';
+    document.getElementById('add-tag').value   = 'รอประชุม';
+    document.getElementById('add-overlay').classList.add('open');
+    setTimeout(() => document.getElementById('add-title').focus(), 80);
+  }
+
+  function closeAddModal() {
+    document.getElementById('add-overlay').classList.remove('open');
+  }
+
+  function addOverlayClick(e) {
+    if (e.target === document.getElementById('add-overlay')) closeAddModal();
+  }
+
+  function saveNewRule() {
+    const title = document.getElementById('add-title').value.trim();
+    const desc  = document.getElementById('add-desc').value.trim();
+    const tag   = document.getElementById('add-tag').value;
+    if (!title) { document.getElementById('add-title').focus(); return; }
+    data[addTargetSection].rules.push({ title, desc, tag, voteResult: '' });
+    persist();
+    closeAddModal();
+    if (activeSection === addTargetSection) refreshPanel(addTargetSection);
+    renderHistory();
   }
 
   // init
