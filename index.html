@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consensus Eye CMU — Chief Resident Rules</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a56db, #1e40af);
+      color: white;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    header .eye-icon { font-size: 32px; }
+
+    header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.3px; }
+    header p  { font-size: 13px; opacity: 0.8; margin-top: 2px; }
+
+    .container { max-width: 900px; margin: 36px auto; padding: 0 20px; }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+    .page-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 28px;
+    }
+
+    /* Section buttons */
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .section-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 12px;
+      border: 2px solid transparent;
+      border-radius: 14px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .section-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .section-btn.active {
+      border-color: #1a56db;
+      background: #eff6ff;
+    }
+
+    .section-btn .icon {
+      font-size: 32px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .section-btn[data-section="ward"]   .icon { background: #dbeafe; }
+    .section-btn[data-section="or"]     .icon { background: #fce7f3; }
+    .section-btn[data-section="opd"]    .icon { background: #dcfce7; }
+    .section-btn[data-section="handover"] .icon { background: #fef3c7; }
+
+    .section-btn .label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .section-btn .sublabel {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .section-btn.active .label { color: #1a56db; }
+
+    /* Consensus panel */
+    .consensus-panel {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: none;
+    }
+
+    .consensus-panel.visible { display: block; }
+
+    .panel-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-header .title-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .panel-header .badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: #dbeafe;
+      color: #1a56db;
+    }
+    .panel-header h2 { font-size: 17px; font-weight: 700; }
+
+    .panel-header .updated {
+      font-size: 12px; color: #9ca3af;
+    }
+
+    /* Rules list */
+    .rules-list { padding: 8px 0; }
+
+    .rule-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid #f3f4f6;
+      align-items: flex-start;
+      transition: background 0.15s;
+    }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-item:hover { background: #f9fafb; }
+
+    .rule-num {
+      min-width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #1a56db;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .rule-content { flex: 1; }
+    .rule-content .rule-title {
+      font-size: 14px; font-weight: 600; color: #111827;
+      margin-bottom: 4px;
+    }
+    .rule-content .rule-desc {
+      font-size: 13px; color: #6b7280; line-height: 1.5;
+    }
+
+    .rule-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 99px;
+      white-space: nowrap;
+      align-self: flex-start;
+      margin-top: 2px;
+    }
+    .tag-required  { background: #fee2e2; color: #dc2626; }
+    .tag-important { background: #fef3c7; color: #d97706; }
+    .tag-info      { background: #dcfce7; color: #16a34a; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 48px; color: #9ca3af; }
+    .empty .big { font-size: 40px; margin-bottom: 12px; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .section-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eye-icon">👁️</div>
+  <div>
+    <h1>Consensus Eye CMU</h1>
+    <p>Chief Resident — Rule &amp; Consensus Management</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="page-title">Chief Resident Rules</div>
+  <div class="page-subtitle">Select a section to view the consensus and guidelines</div>
+
+  <!-- Section buttons -->
+  <div class="section-grid">
+
+    <button class="section-btn" data-section="ward" onclick="showSection('ward', this)">
+      <div class="icon">🏥</div>
+      <div class="label">Ward</div>
+      <div class="sublabel">หอผู้ป่วย</div>
+    </button>
+
+    <button class="section-btn" data-section="or" onclick="showSection('or', this)">
+      <div class="icon">🔬</div>
+      <div class="label">OR</div>
+      <div class="sublabel">ห้องผ่าตัด</div>
+    </button>
+
+    <button class="section-btn" data-section="opd" onclick="showSection('opd', this)">
+      <div class="icon">🏛️</div>
+      <div class="label">OPD</div>
+      <div class="sublabel">ผู้ป่วยนอก</div>
+    </button>
+
+    <button class="section-btn" data-section="handover" onclick="showSection('handover', this)">
+      <div class="icon">📋</div>
+      <div class="label">ส่งเวร</div>
+      <div class="sublabel">Handover</div>
+    </button>
+
+  </div>
+
+  <!-- Consensus Panel (hidden by default) -->
+  <div class="consensus-panel" id="consensus-panel">
+
+    <div class="panel-header">
+      <div class="title-row">
+        <span id="panel-icon"></span>
+        <h2 id="panel-title"></h2>
+        <span class="badge" id="panel-badge"></span>
+      </div>
+      <div class="updated">อัพเดต: 28 พ.ค. 2569</div>
+    </div>
+
+    <div class="rules-list" id="rules-list"></div>
+
+  </div>
+
+</div>
+
+<script>
+  const data = {
+    ward: {
+      title: "Ward — หอผู้ป่วย",
+      icon: "🏥",
+      badge: "Ward",
+      rules: [
+        {
+          title: "Morning Round",
+          desc: "Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย",
+          tag: "required"
+        },
+        {
+          title: "รายงานผู้ป่วยใหม่",
+          desc: "ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit",
+          tag: "required"
+        },
+        {
+          title: "ยาและ IV fluid",
+          desc: "Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign",
+          tag: "important"
+        },
+        {
+          title: "Discharge Planning",
+          desc: "วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน",
+          tag: "info"
+        },
+        {
+          title: "Emergency Call",
+          desc: "กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5",
+          tag: "required"
+        }
+      ]
+    },
+    or: {
+      title: "OR — ห้องผ่าตัด",
+      icon: "🔬",
+      badge: "OR",
+      rules: [
+        {
+          title: "Scrub & Brief",
+          desc: "Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent",
+          tag: "required"
+        },
+        {
+          title: "ลำดับ Case",
+          desc: "จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า",
+          tag: "important"
+        },
+        {
+          title: "Emergency Case",
+          desc: "Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง",
+          tag: "required"
+        },
+        {
+          title: "Instrument Check",
+          desc: "Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง",
+          tag: "important"
+        },
+        {
+          title: "Post-op Note",
+          desc: "เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง",
+          tag: "info"
+        }
+      ]
+    },
+    opd: {
+      title: "OPD — ผู้ป่วยนอก",
+      icon: "🏛️",
+      badge: "OPD",
+      rules: [
+        {
+          title: "การรับผู้ป่วย Walk-in",
+          desc: "ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที",
+          tag: "required"
+        },
+        {
+          title: "Triage Protocol",
+          desc: "ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที",
+          tag: "important"
+        },
+        {
+          title: "Referral",
+          desc: "การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน",
+          tag: "important"
+        },
+        {
+          title: "Follow-up Appointment",
+          desc: "นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case",
+          tag: "info"
+        }
+      ]
+    },
+    handover: {
+      title: "ส่งเวร — Handover",
+      icon: "📋",
+      badge: "Handover",
+      rules: [
+        {
+          title: "เวลาส่งเวร",
+          desc: "ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร",
+          tag: "required"
+        },
+        {
+          title: "รายงาน Sick Patients",
+          desc: "ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending",
+          tag: "required"
+        },
+        {
+          title: "ISBAR Format",
+          desc: "ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง",
+          tag: "important"
+        },
+        {
+          title: "Pending Investigation",
+          desc: "รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ",
+          tag: "important"
+        },
+        {
+          title: "บันทึกการส่งเวร",
+          desc: "ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal",
+          tag: "info"
+        }
+      ]
+    }
+  };
+
+  const tagLabel = { required: "Required", important: "Important", info: "Info" };
+
+  function showSection(key, btn) {
+    // Toggle active button
+    document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const section = data[key];
+    document.getElementById('panel-icon').textContent = section.icon + " ";
+    document.getElementById('panel-title').textContent = section.title;
+    document.getElementById('panel-badge').textContent = section.rules.length + " rules";
+
+    const list = document.getElementById('rules-list');
+    list.innerHTML = section.rules.map((r, i) => `
+      <div class="rule-item">
+        <div class="rule-num">${i + 1}</div>
+        <div class="rule-content">
+          <div class="rule-title">${r.title}</div>
+          <div class="rule-desc">${r.desc}</div>
+        </div>
+        <span class="rule-tag tag-${r.tag}">${tagLabel[r.tag]}</span>
+      </div>
+    `).join('');
+
+    const panel = document.getElementById('consensus-panel');
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+
+</body>
+</html>
