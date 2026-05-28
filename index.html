@@ -86,6 +86,9 @@
     .tag-select{font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;border:2px solid #1a56db;background:white;color:#1a56db;cursor:pointer;align-self:flex-start;margin-top:2px;}
     .delete-btn{background:none;border:none;color:#dc2626;font-size:17px;cursor:pointer;padding:3px 6px;border-radius:6px;align-self:flex-start;flex-shrink:0;transition:background 0.15s;}
     .delete-btn:hover{background:#fee2e2;}
+    .edit-btn{background:none;border:none;color:#1a56db;font-size:17px;cursor:pointer;padding:3px 6px;border-radius:6px;align-self:flex-start;flex-shrink:0;transition:background 0.15s;}
+    .edit-btn:hover{background:#dbeafe;}
+    .admin-actions{display:flex;flex-direction:column;gap:4px;align-items:center;flex-shrink:0;}
 
     /* PANEL FOOTER */
     .panel-footer{padding:20px 24px;border-top:2px dashed #e5e7eb;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
@@ -331,6 +334,26 @@
   </div>
 </div>
 
+<!-- EDIT RULE MODAL -->
+<div class="form-bg" id="edit-modal" onclick="if(event.target===this)closeEditModal()">
+  <div class="form-box">
+    <h3>✏️ แก้ไข Rule</h3>
+    <label>หัวข้อ *</label>
+    <input type="text" id="edit-title" placeholder="ชื่อหัวข้อ"/>
+    <label>รายละเอียด</label>
+    <textarea id="edit-desc" rows="3" placeholder="รายละเอียด..."></textarea>
+    <label>สถานะ</label>
+    <select id="edit-tag">
+      <option value="รอประชุม">รอประชุม</option>
+      <option value="consensus">Consensus</option>
+    </select>
+    <div class="form-btns">
+      <button class="mbtn pri" onclick="saveEditedRule()">💾 บันทึก</button>
+      <button class="mbtn sec" onclick="closeEditModal()">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
 <!-- VOTE SETUP MODAL -->
 <div class="form-bg" id="vsetup-modal" onclick="if(event.target===this)closeVsetup()">
   <div class="form-box">
@@ -465,17 +488,19 @@ function ruleHTML(sKey, i, r) {
     <div class="rule-item">
       <div class="rule-num">${i+1}</div>
       <div class="rule-content">
-        <div class="rule-title">
-          <span contenteditable="true" onblur="sf('${sKey}',${i},'title',this,'${r._key||''}')">${esc(r.title)}</span>
-          ${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="sf('${sKey}',${i},'voteResult',this,'${r._key||''}')">— ${esc(vr)}</span>` : ''}
-        </div>
-        <div class="rule-desc" contenteditable="true" onblur="sf('${sKey}',${i},'desc',this,'${r._key||''}')">${esc(r.desc)}</div>
+        <div class="rule-title">${esc(r.title)}${vr?`&nbsp;<span class="vote-result">— ${esc(vr)}</span>`:''}</div>
+        <div class="rule-desc">${esc(r.desc)}</div>
       </div>
-      <select class="tag-select" onchange="st('${sKey}',${i},this.value,'${r._key||''}')">
-        <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
-        <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
-      </select>
-      <button class="delete-btn" onclick="delRule('${sKey}',${i}${fbk})">🗑️</button>
+      <div class="admin-actions">
+        <select class="tag-select" onchange="st('${sKey}',${i},this.value,'${r._key||''}')">
+          <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
+          <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
+        </select>
+        <div style="display:flex;gap:4px;">
+          <button class="edit-btn" onclick="openEditModal('${sKey}',${i},'${r._key||''}')">✏️</button>
+          <button class="delete-btn" onclick="delRule('${sKey}',${i}${fbk})">🗑️</button>
+        </div>
+      </div>
     </div>`;
   return `
     <div class="rule-item">
@@ -660,6 +685,39 @@ function saveNewRule() {
     renderHistory();
   }
   closeAddModal();
+}
+
+// ════════════════════════════════════════════════════════
+//  EDIT RULE
+// ════════════════════════════════════════════════════════
+let editTarget = { sKey: null, i: null, fbKey: null };
+
+function openEditModal(sKey, i, fbKey) {
+  const r = D[sKey].rules[i];
+  if (!r) return;
+  editTarget = { sKey, i, fbKey };
+  document.getElementById('edit-title').value = r.title || '';
+  document.getElementById('edit-desc').value  = r.desc  || '';
+  document.getElementById('edit-tag').value   = r.tag   || 'รอประชุม';
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(() => document.getElementById('edit-title').focus(), 80);
+}
+function closeEditModal() { document.getElementById('edit-modal').classList.remove('open'); }
+function saveEditedRule() {
+  const title = document.getElementById('edit-title').value.trim();
+  const desc  = document.getElementById('edit-desc').value.trim();
+  const tag   = document.getElementById('edit-tag').value;
+  if (!title) { document.getElementById('edit-title').focus(); return; }
+  const { sKey, i, fbKey } = editTarget;
+  if (rulesRef && fbKey) {
+    rulesRef.child(sKey).child(fbKey).update({ title, desc, tag });
+  } else {
+    D[sKey].rules[i] = { ...D[sKey].rules[i], title, desc, tag };
+    save();
+    if (activeSec === sKey) refreshPanel(sKey);
+    renderHistory();
+  }
+  closeEditModal();
 }
 
 // ════════════════════════════════════════════════════════
