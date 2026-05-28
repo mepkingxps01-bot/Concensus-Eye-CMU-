@@ -837,25 +837,33 @@ if (voteRef) {
   const ALL_SECTIONS = ['ward','or','opd','handover','chief'];
 
   ALL_SECTIONS.forEach(sKey => {
-    const ref = rulesRef.child(sKey);
-    // Seed defaults into Firebase on first run
-    ref.once('value', snap => {
-      if (!snap.exists()) {
-        D[sKey].rules.forEach(r => {
-          const {_key, ...clean} = r;
-          ref.push(clean);
+    const sRef = rulesRef.child(sKey);
+    const iRef = firebase.database().ref('cmu_init/' + sKey);
+
+    // Check permanent init flag first — prevents re-seeding deleted sections
+    iRef.once('value', iSnap => {
+      const initialized = !!iSnap.val();
+      sRef.once('value', snap => {
+        if (!initialized && !snap.exists()) {
+          // True first run for this section — seed from hardcoded defaults
+          DEF[sKey].rules.forEach(r => {
+            const {_key, ...clean} = r;
+            sRef.push(clean);
+          });
+        }
+        // Mark initialized (persists even if all rules are later deleted)
+        if (!initialized) iRef.set(true);
+
+        // Live listener — all devices stay in sync
+        sRef.on('value', snap2 => {
+          const val = snap2.val();
+          D[sKey].rules = val
+            ? Object.entries(val).map(([k, v]) => ({...v, _key: k}))
+            : [];
+          if (activeSec === sKey) refreshPanel(sKey);
+          const histOpen = document.getElementById('tab-history').classList.contains('active');
+          if (histOpen && sKey !== 'chief') renderHistory();
         });
-      }
-      // Live listener — all devices stay in sync
-      ref.on('value', snap2 => {
-        const val = snap2.val();
-        D[sKey].rules = val
-          ? Object.entries(val).map(([k, v]) => ({...v, _key: k}))
-          : [];
-        if (activeSec === sKey) refreshPanel(sKey);
-        // Refresh history tab if it's open and section is a history section
-        const histOpen = document.getElementById('tab-history').classList.contains('active');
-        if (histOpen && sKey !== 'chief') renderHistory();
       });
     });
   });
