@@ -186,6 +186,15 @@
       background: white; color: #1a56db;
       cursor: pointer; align-self: flex-start; margin-top: 2px;
     }
+    .delete-btn {
+      background: none; border: none;
+      color: #dc2626; font-size: 17px;
+      cursor: pointer; padding: 3px 6px;
+      border-radius: 6px; align-self: flex-start;
+      margin-top: 0; flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .delete-btn:hover { background: #fee2e2; }
 
     /* ── HISTORY TAB ── */
     .history-section {
@@ -441,6 +450,7 @@
             <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
             <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
           </select>
+          <button class="delete-btn" onclick="deleteRule('${sKey}',${idx})" title="ลบ">🗑️</button>
         </div>`;
     }
     return `
@@ -469,6 +479,18 @@
   function saveTag(sKey, idx, val) {
     data[sKey].rules[idx].tag = val;
     persist();
+  }
+
+  function deleteRule(sKey, idx) {
+    if (!isAdmin) return;
+    data[sKey].rules.splice(idx, 1);
+    persist();
+    if (activeSection === sKey) {
+      document.getElementById('rules-list').innerHTML =
+        data[sKey].rules.map((r, i) => ruleHTML(sKey, i, r)).join('');
+      document.getElementById('panel-badge').textContent = data[sKey].rules.length + ' rules';
+    }
+    renderHistory();
   }
 
   // ── SHOW SECTION ──────────────────────────────────────────────────────────
