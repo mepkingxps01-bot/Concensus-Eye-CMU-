@@ -46,7 +46,7 @@
     /* Section buttons */
     .section-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 16px;
       margin-bottom: 36px;
     }
@@ -86,6 +86,7 @@
     .section-btn[data-section="or"]     .icon { background: #fce7f3; }
     .section-btn[data-section="opd"]    .icon { background: #dcfce7; }
     .section-btn[data-section="handover"] .icon { background: #fef3c7; }
+    .section-btn[data-section="chief"]    .icon { background: #f3e8ff; }
 
     .section-btn .label {
       font-size: 15px;
@@ -234,6 +235,12 @@
       <div class="sublabel">Handover</div>
     </button>
 
+    <button class="section-btn" data-section="chief" onclick="showSection('chief', this)">
+      <div class="icon">🗣️</div>
+      <div class="label">นำเสนอปัญหา</div>
+      <div class="sublabel">ต่อ Chief</div>
+    </button>
+
   </div>
 
   <!-- Consensus Panel (hidden by default) -->
@@ -343,6 +350,38 @@
         {
           title: "Follow-up Appointment",
           desc: "นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case",
+          tag: "info"
+        }
+      ]
+    },
+    chief: {
+      title: "นำเสนอปัญหาต่อ Chief",
+      icon: "🗣️",
+      badge: "Chief",
+      rules: [
+        {
+          title: "เตรียมข้อมูลก่อนนำเสนอ",
+          desc: "รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้",
+          tag: "required"
+        },
+        {
+          title: "ใช้ SBAR Format",
+          desc: "นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว",
+          tag: "required"
+        },
+        {
+          title: "ระบุปัญหาให้ชัดเจน",
+          desc: "บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส",
+          tag: "important"
+        },
+        {
+          title: "ไม่นำเสนอขณะ Chief ยุ่ง",
+          desc: "หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสมหรือแจ้งก่อนว่าต้องการปรึกษา",
+          tag: "important"
+        },
+        {
+          title: "บันทึกผลการปรึกษา",
+          desc: "จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident",
           tag: "info"
         }
       ]
