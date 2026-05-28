@@ -316,8 +316,10 @@
     <input type="text" id="add-title" placeholder="ชื่อหัวข้อ"/>
     <label>รายละเอียด</label>
     <textarea id="add-desc" rows="3" placeholder="รายละเอียด..."></textarea>
-    <label>สถานะ</label>
-    <select id="add-tag"><option value="รอประชุม">รอประชุม</option><option value="consensus">Consensus</option></select>
+    <div id="add-tag-group">
+      <label>สถานะ</label>
+      <select id="add-tag"><option value="รอประชุม">รอประชุม</option><option value="consensus">Consensus</option></select>
+    </div>
     <div class="form-btns">
       <button class="mbtn pri" onclick="saveNewRule()" style="background:#059669;">บันทึก</button>
       <button class="mbtn sec" onclick="closeAddModal()">ยกเลิก</button>
@@ -394,6 +396,7 @@ let addTarget    = null;
 let hasJoined    = false;
 let ticker       = null;
 let fbState      = { status: 'idle' };
+let chiefRef     = null;
 
 // ── DEFAULT DATA ─────────────────────────────────────────
 const DEF = {
@@ -451,22 +454,23 @@ const tagLbl = t => t==='consensus' ? 'Consensus' : 'รอประชุม';
 //  RENDER RULE
 // ════════════════════════════════════════════════════════
 function ruleHTML(sKey, i, r) {
-  const vr = r.voteResult || '';
+  const vr  = r.voteResult || '';
+  const fbk = r._key ? `,'${r._key}'` : ',""';
   if (isAdmin) return `
     <div class="rule-item">
       <div class="rule-num">${i+1}</div>
       <div class="rule-content">
         <div class="rule-title">
-          <span contenteditable="true" onblur="sf('${sKey}',${i},'title',this)">${esc(r.title)}</span>
-          ${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="sf('${sKey}',${i},'voteResult',this)">— ${esc(vr)}</span>` : ''}
+          <span contenteditable="true" onblur="sf('${sKey}',${i},'title',this,'${r._key||''}')">${esc(r.title)}</span>
+          ${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="sf('${sKey}',${i},'voteResult',this,'${r._key||''}')">— ${esc(vr)}</span>` : ''}
         </div>
-        <div class="rule-desc" contenteditable="true" onblur="sf('${sKey}',${i},'desc',this)">${esc(r.desc)}</div>
+        <div class="rule-desc" contenteditable="true" onblur="sf('${sKey}',${i},'desc',this,'${r._key||''}')">${esc(r.desc)}</div>
       </div>
-      <select class="tag-select" onchange="st('${sKey}',${i},this.value)">
+      <select class="tag-select" onchange="st('${sKey}',${i},this.value,'${r._key||''}')">
         <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
         <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
       </select>
-      <button class="delete-btn" onclick="delRule('${sKey}',${i})">🗑️</button>
+      <button class="delete-btn" onclick="delRule('${sKey}',${i}${fbk})">🗑️</button>
     </div>`;
   return `
     <div class="rule-item">
@@ -479,17 +483,28 @@ function ruleHTML(sKey, i, r) {
     </div>`;
 }
 
-function sf(sKey, i, f, el) {
+function sf(sKey, i, f, el, fbKey) {
   let v = el.innerText.trim();
   if (f==='voteResult' && v.startsWith('—')) v = v.replace(/^—\s*/,'');
-  D[sKey].rules[i][f] = v; save();
+  if (sKey==='chief' && chiefRef && fbKey) {
+    chiefRef.child(fbKey).update({[f]: v});
+  } else {
+    D[sKey].rules[i][f] = v; save();
+  }
 }
-function st(sKey, i, v) { D[sKey].rules[i].tag = v; save(); }
-function delRule(sKey, i) {
+function st(sKey, i, v, fbKey) {
+  if (sKey==='chief' && chiefRef && fbKey) chiefRef.child(fbKey).update({tag: v});
+  else { D[sKey].rules[i].tag = v; save(); }
+}
+function delRule(sKey, i, fbKey) {
   if (!isAdmin) return;
-  D[sKey].rules.splice(i,1); save();
-  if (activeSec===sKey) refreshPanel(sKey);
-  renderHistory();
+  if (sKey==='chief' && chiefRef && fbKey) {
+    chiefRef.child(fbKey).remove(); // Firebase listener will re-render
+  } else {
+    D[sKey].rules.splice(i,1); save();
+    if (activeSec===sKey) refreshPanel(sKey);
+    renderHistory();
+  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -520,11 +535,15 @@ function refreshPanel(sKey) {
 }
 
 function buildFooter(sKey) {
-  if (!isAdmin) return '';
-  const voteOngoing = fbState.status && fbState.status!=='idle';
-  const vBtn = (sKey==='chief' && !voteOngoing)
+  const voteOngoing = fbState.status && fbState.status !== 'idle';
+  const vBtn = (isAdmin && sKey === 'chief' && !voteOngoing)
     ? `<button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button>` : '';
-  return `<div class="panel-footer"><button class="add-topic-btn" onclick="openAddModal('${sKey}')">➕ Add Topic</button>${vBtn}</div>`;
+  // Chief: everyone can add. Other sections: admin only
+  const showAdd = isAdmin || sKey === 'chief';
+  if (!showAdd && !vBtn) return '';
+  const addLbl = sKey === 'chief' ? '➕ เพิ่มปัญหา / หัวข้อ' : '➕ Add Topic';
+  const addBtn = showAdd ? `<button class="add-topic-btn" onclick="openAddModal('${sKey}')">${addLbl}</button>` : '';
+  return `<div class="panel-footer">${addBtn}${vBtn}</div>`;
 }
 
 // Admin lobby slot inside panel
@@ -617,23 +636,33 @@ function checkPw() {
 //  ADD TOPIC
 // ════════════════════════════════════════════════════════
 function openAddModal(sKey) {
-  addTarget=sKey;
-  document.getElementById('add-title').value='';
-  document.getElementById('add-desc').value='';
-  document.getElementById('add-tag').value='รอประชุม';
+  addTarget = sKey;
+  document.getElementById('add-title').value = '';
+  document.getElementById('add-desc').value  = '';
+  document.getElementById('add-tag').value   = 'รอประชุม';
+  // Hide tag selector for non-admin participants
+  document.getElementById('add-tag-group').style.display = isAdmin ? 'block' : 'none';
+  // Change title text
+  document.querySelector('#add-modal h3').textContent =
+    sKey === 'chief' ? '➕ เพิ่มปัญหา / หัวข้อ' : '➕ Add Topic';
   document.getElementById('add-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('add-title').focus(),80);
+  setTimeout(() => document.getElementById('add-title').focus(), 80);
 }
 function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
 function saveNewRule() {
-  const title=document.getElementById('add-title').value.trim();
-  const desc =document.getElementById('add-desc').value.trim();
-  const tag  =document.getElementById('add-tag').value;
+  const title = document.getElementById('add-title').value.trim();
+  const desc  = document.getElementById('add-desc').value.trim();
+  const tag   = isAdmin ? document.getElementById('add-tag').value : 'รอประชุม';
   if (!title) { document.getElementById('add-title').focus(); return; }
-  D[addTarget].rules.push({title,desc,tag,voteResult:''});
-  save(); closeAddModal();
-  if (activeSec===addTarget) refreshPanel(addTarget);
-  renderHistory();
+  if (addTarget === 'chief' && chiefRef) {
+    chiefRef.push({ title, desc, tag, voteResult: '' }); // Firebase syncs to all devices
+  } else {
+    D[addTarget].rules.push({ title, desc, tag, voteResult: '' });
+    save();
+    if (activeSec === addTarget) refreshPanel(addTarget);
+    renderHistory();
+  }
+  closeAddModal();
 }
 
 // ════════════════════════════════════════════════════════
@@ -803,12 +832,33 @@ function showDone(s) {
 }
 
 // ════════════════════════════════════════════════════════
-//  FIREBASE LISTENER
+//  FIREBASE LISTENERS
 // ════════════════════════════════════════════════════════
 if (voteRef) {
+  // Vote state — syncs vote lobby/countdown/result across all devices
   voteRef.on('value', snap => {
     applyState(snap.val() || {status:'idle'});
   }, err => setFbBar('● Firebase error: ' + err.message, 'err'));
+
+  // Chief topics — synced so every device sees the same list
+  chiefRef = firebase.database().ref('cmu_chief_topics');
+  chiefRef.once('value', snap => {
+    if (!snap.exists()) {
+      // First run: seed Firebase with the default chief rules
+      D.chief.rules.forEach(r => {
+        const {_key, ...clean} = r;
+        chiefRef.push(clean);
+      });
+    }
+    // Live listener — updates D.chief.rules for all devices in real-time
+    chiefRef.on('value', snap2 => {
+      const val = snap2.val();
+      D.chief.rules = val
+        ? Object.entries(val).map(([k, v]) => ({...v, _key: k}))
+        : [];
+      if (activeSec === 'chief') refreshPanel('chief');
+    });
+  });
 }
 
 // ════════════════════════════════════════════════════════
