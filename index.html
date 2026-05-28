@@ -1,257 +1,248 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Consensus Eye CMU — Chief Resident Rules</title>
+  <title>Consensus Eye CMU</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; min-height: 100vh; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh;}
 
-    /* ── HEADER ── */
-    header {
-      background: linear-gradient(135deg, #1a56db, #1e40af);
-      color: white; padding: 20px 32px;
-      display: flex; align-items: center; justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    .header-left { display: flex; align-items: center; gap: 14px; }
-    header .eye-icon { font-size: 32px; }
-    header h1 { font-size: 20px; font-weight: 700; }
-    header p  { font-size: 13px; opacity: 0.8; margin-top: 2px; }
-    .admin-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 9px 18px; border-radius: 10px;
-      border: 2px solid rgba(255,255,255,0.45);
-      background: transparent; color: white;
-      font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-    }
-    .admin-btn:hover { background: rgba(255,255,255,0.15); }
-    .admin-btn.on { background: #dc2626; border-color: #dc2626; }
+    /* HEADER */
+    header{background:linear-gradient(135deg,#1a56db,#1e40af);color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+    .header-left{display:flex;align-items:center;gap:14px;}
+    header .eye-icon{font-size:32px;}
+    header h1{font-size:20px;font-weight:700;}
+    header p{font-size:13px;opacity:0.8;margin-top:2px;}
+    .admin-btn{display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;border:2px solid rgba(255,255,255,0.45);background:transparent;color:white;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+    .admin-btn:hover{background:rgba(255,255,255,0.15);}
+    .admin-btn.on{background:#dc2626;border-color:#dc2626;}
 
-    /* ── ADMIN BANNER ── */
-    .admin-banner {
-      display: none; background: #fff1f1; border-bottom: 2px solid #fca5a5;
-      padding: 9px 32px; font-size: 13px; font-weight: 600; color: #dc2626; text-align: center;
-    }
-    .admin-banner.show { display: block; }
+    /* BANNERS */
+    .admin-banner{display:none;background:#fff1f1;border-bottom:2px solid #fca5a5;padding:9px 32px;font-size:13px;font-weight:600;color:#dc2626;text-align:center;}
+    .admin-banner.show{display:block;}
+    .fb-bar{font-size:11px;text-align:center;padding:5px;color:#6b7280;background:#f9fafb;border-bottom:1px solid #e5e7eb;}
+    .fb-bar.ok{color:#059669;}
+    .fb-bar.err{color:#dc2626;}
 
-    /* ── TABS ── */
-    .tab-bar { background: white; border-bottom: 2px solid #e5e7eb; display: flex; padding: 0 28px; }
-    .tab-btn {
-      padding: 14px 20px; font-size: 14px; font-weight: 600; color: #6b7280;
-      border: none; background: none; cursor: pointer;
-      border-bottom: 3px solid transparent; margin-bottom: -2px;
-      transition: all 0.2s; white-space: nowrap;
-    }
-    .tab-btn:hover { color: #1a56db; }
-    .tab-btn.active { color: #1a56db; border-bottom-color: #1a56db; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    /* TABS */
+    .tab-bar{background:white;border-bottom:2px solid #e5e7eb;display:flex;padding:0 28px;}
+    .tab-btn{padding:14px 20px;font-size:14px;font-weight:600;color:#6b7280;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;white-space:nowrap;}
+    .tab-btn:hover{color:#1a56db;}
+    .tab-btn.active{color:#1a56db;border-bottom-color:#1a56db;}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
 
-    /* ── CONTAINER ── */
-    .container { max-width: 960px; margin: 36px auto; padding: 0 20px; }
-    .page-title { font-size: 22px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; }
-    .page-subtitle { font-size: 14px; color: #64748b; margin-bottom: 28px; }
+    /* CONTAINER */
+    .container{max-width:960px;margin:36px auto;padding:0 20px;}
+    .page-title{font-size:22px;font-weight:700;color:#1e3a8a;margin-bottom:6px;}
+    .page-subtitle{font-size:14px;color:#64748b;margin-bottom:28px;}
 
-    /* ── SECTION BUTTONS ── */
-    .section-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 36px; }
-    .section-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      padding: 18px 10px; border: 2px solid transparent; border-radius: 14px;
-      background: white; cursor: pointer; transition: all 0.2s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-    .section-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
-    .section-btn.active { border-color: #1a56db; background: #eff6ff; }
-    .section-btn .icon {
-      font-size: 26px; width: 50px; height: 50px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .section-btn[data-section="ward"]     .icon { background: #dbeafe; }
-    .section-btn[data-section="or"]       .icon { background: #fce7f3; }
-    .section-btn[data-section="opd"]      .icon { background: #dcfce7; }
-    .section-btn[data-section="handover"] .icon { background: #fef3c7; }
-    .section-btn[data-section="chief"]    .icon { background: #f3e8ff; }
-    .section-btn .label   { font-size: 13px; font-weight: 600; color: #374151; text-align: center; }
-    .section-btn .sublabel{ font-size: 11px; color: #9ca3af; text-align: center; }
-    .section-btn.active .label { color: #1a56db; }
+    /* SECTION BUTTONS */
+    .section-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:36px;}
+    .section-btn{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;border:2px solid transparent;border-radius:14px;background:white;cursor:pointer;transition:all 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.08);position:relative;}
+    .section-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+    .section-btn.active{border-color:#1a56db;background:#eff6ff;}
+    .section-btn.vote-pulse{border-color:#7c3aed!important;background:#f5f3ff!important;animation:vPulse 1.8s infinite;}
+    @keyframes vPulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.35)}50%{box-shadow:0 0 0 10px rgba(124,58,237,0)}}
+    .vote-dot{position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:#7c3aed;display:none;}
+    .vote-pulse .vote-dot{display:block;}
+    .section-btn .icon{font-size:26px;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .section-btn[data-section="ward"]     .icon{background:#dbeafe;}
+    .section-btn[data-section="or"]       .icon{background:#fce7f3;}
+    .section-btn[data-section="opd"]      .icon{background:#dcfce7;}
+    .section-btn[data-section="handover"] .icon{background:#fef3c7;}
+    .section-btn[data-section="chief"]    .icon{background:#f3e8ff;}
+    .section-btn .label{font-size:13px;font-weight:600;color:#374151;text-align:center;}
+    .section-btn .sublabel{font-size:11px;color:#9ca3af;text-align:center;}
+    .section-btn.active .label{color:#1a56db;}
 
-    /* ── CONSENSUS PANEL ── */
-    .consensus-panel { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; display: none; }
-    .consensus-panel.visible { display: block; }
-    .panel-header {
-      padding: 18px 24px; border-bottom: 1px solid #e5e7eb;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .panel-header .title-row { display: flex; align-items: center; gap: 10px; }
-    .panel-header .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #dbeafe; color: #1a56db; }
-    .panel-header h2 { font-size: 17px; font-weight: 700; }
-    .panel-header .updated { font-size: 12px; color: #9ca3af; }
+    /* CONSENSUS PANEL */
+    .consensus-panel{background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;display:none;}
+    .consensus-panel.visible{display:block;}
+    .panel-header{padding:18px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;}
+    .panel-header .title-row{display:flex;align-items:center;gap:10px;}
+    .panel-header .badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:#dbeafe;color:#1a56db;}
+    .panel-header h2{font-size:17px;font-weight:700;}
+    .panel-header .updated{font-size:12px;color:#9ca3af;}
 
-    /* ── RULES LIST ── */
-    .rules-list { padding: 8px 0; }
-    .rule-item { display: flex; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #f3f4f6; align-items: flex-start; transition: background 0.15s; }
-    .rule-item:last-child { border-bottom: none; }
-    .rule-item:hover { background: #f9fafb; }
-    .rule-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a56db; color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .rule-content { flex: 1; }
-    .rule-content .rule-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px; }
-    .rule-content .rule-desc  { font-size: 13px; color: #6b7280; line-height: 1.5; }
-    [contenteditable="true"] { outline: none; border-bottom: 2px dashed #1a56db; background: #eff6ff; padding: 2px 4px; border-radius: 4px; cursor: text; display: inline-block; min-width: 20px; }
+    /* RULES */
+    .rules-list{padding:8px 0;}
+    .rule-item{display:flex;gap:16px;padding:16px 24px;border-bottom:1px solid #f3f4f6;align-items:flex-start;transition:background 0.15s;}
+    .rule-item:last-child{border-bottom:none;}
+    .rule-item:hover{background:#f9fafb;}
+    .rule-num{min-width:28px;height:28px;border-radius:50%;background:#1a56db;color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .rule-content{flex:1;}
+    .rule-content .rule-title{font-size:14px;font-weight:600;color:#111827;margin-bottom:4px;}
+    .rule-content .rule-desc{font-size:13px;color:#6b7280;line-height:1.5;}
+    [contenteditable="true"]{outline:none;border-bottom:2px dashed #1a56db;background:#eff6ff;padding:2px 4px;border-radius:4px;cursor:text;display:inline-block;min-width:20px;}
+    .vote-result{color:#dc2626;font-weight:700;}
+    .vote-result-edit{color:#dc2626!important;border-bottom-color:#dc2626!important;background:#fff1f1!important;}
 
-    /* ── TAGS ── */
-    .rule-tag { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 99px; white-space: nowrap; align-self: flex-start; margin-top: 2px; }
-    .tag-consensus { background: #d1fae5; color: #047857; }
-    .tag-waiting   { background: #fef9c3; color: #92400e; }
-    .tag-select { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; border: 2px solid #1a56db; background: white; color: #1a56db; cursor: pointer; align-self: flex-start; margin-top: 2px; }
+    /* TAGS */
+    .rule-tag{font-size:11px;font-weight:700;padding:4px 11px;border-radius:99px;white-space:nowrap;align-self:flex-start;margin-top:2px;}
+    .tag-consensus{background:#d1fae5;color:#047857;}
+    .tag-waiting{background:#fef9c3;color:#92400e;}
+    .tag-select{font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;border:2px solid #1a56db;background:white;color:#1a56db;cursor:pointer;align-self:flex-start;margin-top:2px;}
+    .delete-btn{background:none;border:none;color:#dc2626;font-size:17px;cursor:pointer;padding:3px 6px;border-radius:6px;align-self:flex-start;flex-shrink:0;transition:background 0.15s;}
+    .delete-btn:hover{background:#fee2e2;}
 
-    /* ── DELETE ── */
-    .delete-btn { background: none; border: none; color: #dc2626; font-size: 17px; cursor: pointer; padding: 3px 6px; border-radius: 6px; align-self: flex-start; flex-shrink: 0; transition: background 0.15s; }
-    .delete-btn:hover { background: #fee2e2; }
+    /* PANEL FOOTER */
+    .panel-footer{padding:20px 24px;border-top:2px dashed #e5e7eb;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+    .add-topic-btn{display:flex;align-items:center;gap:8px;padding:11px 26px;background:#059669;color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(5,150,105,0.25);}
+    .add-topic-btn:hover{background:#047857;transform:translateY(-1px);}
+    .vote-now-btn{display:flex;align-items:center;gap:8px;padding:11px 26px;background:#7c3aed;color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(124,58,237,0.3);}
+    .vote-now-btn:hover{background:#6d28d9;transform:translateY(-1px);}
 
-    /* ── VOTE RESULT (red) ── */
-    .vote-result { color: #dc2626; font-weight: 700; }
-    .vote-result-edit { color: #dc2626; font-weight: 700; border-bottom-color: #dc2626 !important; background: #fff1f1 !important; }
+    /* ADMIN LOBBY PANEL */
+    .admin-lobby{background:linear-gradient(135deg,#4c1d95,#5b21b6);color:white;border-radius:12px;margin:16px 24px;padding:20px;}
+    .admin-lobby h4{font-size:16px;font-weight:700;margin-bottom:4px;}
+    .admin-lobby .al-topic{font-size:14px;opacity:0.8;margin-bottom:14px;}
+    .al-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+    .al-choice{background:rgba(255,255,255,0.15);border-radius:10px;padding:12px;text-align:center;}
+    .al-choice .alc-lbl{font-size:11px;opacity:0.7;}
+    .al-choice .alc-txt{font-size:16px;font-weight:700;}
+    .al-count{font-size:36px;font-weight:900;text-align:center;}
+    .al-count-lbl{font-size:13px;opacity:0.7;text-align:center;margin-bottom:16px;}
+    .al-btns{display:flex;gap:10px;}
+    .start-btn{flex:1;padding:13px;background:white;color:#5b21b6;border:none;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;transition:all 0.2s;}
+    .start-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+    .cancel-btn{padding:13px 16px;background:rgba(255,255,255,0.2);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;}
+    .cancel-btn:hover{background:rgba(255,255,255,0.3);}
 
-    /* ── VOTE NOW FOOTER ── */
-    .panel-footer { padding: 20px 24px; border-top: 2px dashed #e5e7eb; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-    .add-topic-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 11px 26px; background: #059669; color: white;
-      border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(5,150,105,0.25);
-    }
-    .add-topic-btn:hover { background: #047857; transform: translateY(-1px); }
-    .vote-now-btn {
-      display: flex; align-items: center; gap: 10px;
-      padding: 13px 32px; background: #7c3aed; color: white;
-      border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(124,58,237,0.3);
-    }
-    .vote-now-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+    /* PARTICIPANT BOTTOM SHEET */
+    .p-sheet{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-radius:24px 24px 0 0;padding:24px 24px 44px;z-index:800;box-shadow:0 -8px 40px rgba(0,0,0,0.18);}
+    .p-sheet.open{display:block;}
+    .p-handle{width:40px;height:4px;background:#e5e7eb;border-radius:99px;margin:0 auto 18px;}
+    .p-badge{display:inline-block;background:#f5f3ff;color:#7c3aed;font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;margin-bottom:10px;}
+    .p-title{font-size:20px;font-weight:800;color:#111827;margin-bottom:14px;}
+    .p-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+    .p-choice{border-radius:12px;padding:14px;text-align:center;}
+    .p-choice.a{background:#eff6ff;} .p-choice.b{background:#f0fdf4;}
+    .pc-lbl{font-size:11px;font-weight:600;color:#6b7280;margin-bottom:4px;}
+    .pc-txt{font-size:18px;font-weight:800;color:#111827;}
+    .join-btn{width:100%;padding:15px;background:#7c3aed;color:white;border:none;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;transition:all 0.2s;margin-bottom:10px;}
+    .join-btn:hover{background:#6d28d9;}
+    .join-btn.joined{background:#059669;cursor:default;}
+    .p-count{text-align:center;font-size:13px;color:#6b7280;}
 
-    /* ── VOTE SETUP MODAL ── */
-    .vsetup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1100; align-items: center; justify-content: center; }
-    .vsetup-overlay.open { display: flex; }
-    .vsetup-box { background: white; border-radius: 20px; padding: 32px; width: 440px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
-    .vsetup-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-    .vsetup-box label { font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 6px; margin-top: 14px; }
-    .vsetup-box select, .vsetup-box input[type="text"] {
-      width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px;
-      font-size: 14px; outline: none; transition: border-color 0.2s;
-    }
-    .vsetup-box select:focus, .vsetup-box input:focus { border-color: #7c3aed; }
-    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .choice-grid label { margin-top: 0; }
+    /* VOTE FULL-SCREEN OVERLAY */
+    .v-overlay{display:none;position:fixed;inset:0;background:#1e1b4b;z-index:900;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;}
+    .v-overlay.open{display:flex;}
+    .vs-lbl{font-size:13px;font-weight:600;color:#c4b5fd;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+    .vs-title{font-size:26px;font-weight:800;color:white;text-align:center;margin-bottom:28px;max-width:680px;}
+    .choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:660px;margin-bottom:28px;}
+    .c-card{background:rgba(255,255,255,0.12);border:3px solid rgba(255,255,255,0.2);border-radius:20px;padding:22px 16px;text-align:center;color:white;}
+    .c-card .c-lbl{font-size:12px;opacity:0.6;margin-bottom:6px;}
+    .c-card .c-txt{font-size:22px;font-weight:800;}
+    .countdown-num{font-size:86px;font-weight:900;color:#a78bfa;line-height:1;margin-bottom:8px;}
+    .countdown-num.urgent{color:#f87171;animation:pulse 0.5s infinite alternate;}
+    @keyframes pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
+    .vs-prompt{font-size:14px;color:#c4b5fd;margin-bottom:20px;}
+    .winner-row{display:none;flex-direction:column;align-items:center;gap:12px;}
+    .winner-row.show{display:flex;}
+    .wr-lbl{font-size:16px;font-weight:700;color:#e0d7ff;}
+    .wr-btns{display:flex;gap:14px;}
+    .wr-btn{min-width:140px;padding:15px 20px;border:none;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;transition:all 0.2s;}
+    .wr-btn.a{background:#3b82f6;color:white;} .wr-btn.a:hover{background:#2563eb;transform:scale(1.03);}
+    .wr-btn.b{background:#10b981;color:white;} .wr-btn.b:hover{background:#059669;transform:scale(1.03);}
 
-    /* ── VOTE COUNTDOWN SCREEN ── */
-    .vote-screen { display: none; position: fixed; inset: 0; background: #1e1b4b; z-index: 1200; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
-    .vote-screen.open { display: flex; }
-    .vs-topic { font-size: 16px; font-weight: 600; color: #c4b5fd; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-    .vs-title { font-size: 28px; font-weight: 800; color: white; text-align: center; margin-bottom: 36px; max-width: 700px; }
-    .choices-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 680px; margin-bottom: 36px; }
-    .choice-card { background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 28px 20px; text-align: center; color: white; }
-    .choice-card .clabel { font-size: 13px; font-weight: 600; opacity: 0.6; margin-bottom: 8px; }
-    .choice-card .ctext  { font-size: 24px; font-weight: 800; }
-    .vs-countdown { font-size: 88px; font-weight: 900; color: #a78bfa; line-height: 1; margin-bottom: 10px; }
-    .vs-countdown.urgent { color: #f87171; animation: vpulse 0.5s infinite alternate; }
-    @keyframes vpulse { from { transform: scale(1); } to { transform: scale(1.12); } }
-    .vs-prompt { font-size: 15px; color: #c4b5fd; }
+    /* DONE SCREEN */
+    .done-view{display:none;flex-direction:column;align-items:center;gap:16px;}
+    .done-view.show{display:flex;}
+    .done-trophy{font-size:60px;}
+    .done-lbl{font-size:15px;color:#c4b5fd;font-weight:600;}
+    .done-topic{font-size:18px;color:rgba(255,255,255,0.75);}
+    .done-winner{font-size:44px;font-weight:900;color:#fbbf24;text-align:center;}
+    .done-btns{display:flex;gap:12px;margin-top:4px;}
+    .save-btn{padding:12px 28px;background:#059669;color:white;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;}
+    .save-btn:hover{background:#047857;}
+    .close-btn{padding:12px 28px;background:rgba(255,255,255,0.2);color:white;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;}
+    .close-btn:hover{background:rgba(255,255,255,0.3);}
 
-    /* winner selection after countdown */
-    .winner-row { display: none; flex-direction: column; align-items: center; gap: 14px; }
-    .winner-row.show { display: flex; }
-    .winner-label { font-size: 17px; font-weight: 700; color: #e0d7ff; margin-bottom: 4px; }
-    .winner-btns { display: flex; gap: 16px; }
-    .winner-btn { flex: 1; min-width: 160px; padding: 18px 24px; border: none; border-radius: 16px; font-size: 18px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-    .winner-btn.a { background: #3b82f6; color: white; }
-    .winner-btn.a:hover { background: #2563eb; transform: scale(1.03); }
-    .winner-btn.b { background: #10b981; color: white; }
-    .winner-btn.b:hover { background: #059669; transform: scale(1.03); }
+    /* HISTORY */
+    .history-section{background:white;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;margin-bottom:24px;}
+    .history-header{padding:15px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:10px;background:#f8fafc;}
+    .history-header .sec-icon{font-size:20px;}
+    .history-header h3{font-size:16px;font-weight:700;color:#1e3a8a;}
 
-    /* ── HISTORY TAB ── */
-    .history-section { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 24px; }
-    .history-header { padding: 15px 24px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 10px; background: #f8fafc; }
-    .history-header .sec-icon { font-size: 20px; }
-    .history-header h3 { font-size: 16px; font-weight: 700; color: #1e3a8a; }
+    /* MODALS */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;}
+    .modal-bg.open{display:flex;}
+    .modal-box{background:white;border-radius:20px;padding:36px 32px;width:360px;box-shadow:0 24px 64px rgba(0,0,0,0.3);text-align:center;}
+    .modal-box .lock{font-size:44px;margin-bottom:14px;}
+    .modal-box h3{font-size:19px;font-weight:700;margin-bottom:6px;}
+    .modal-box p{font-size:13px;color:#6b7280;margin-bottom:22px;}
+    .pw-inp{width:100%;padding:13px 16px;border:2px solid #e5e7eb;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;outline:none;margin-bottom:10px;transition:border-color 0.2s;}
+    .pw-inp:focus{border-color:#1a56db;}
+    .pw-inp.err{border-color:#dc2626;animation:shake 0.3s;}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+    .pw-err{font-size:13px;color:#dc2626;min-height:20px;margin-bottom:12px;}
+    .mbtn{width:100%;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:8px;}
+    .mbtn.pri{background:#1a56db;color:white;} .mbtn.pri:hover{background:#1e40af;}
+    .mbtn.sec{background:#f3f4f6;color:#374151;} .mbtn.sec:hover{background:#e5e7eb;}
 
-    /* ── PASSWORD MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: white; border-radius: 20px; padding: 36px 32px; width: 360px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); text-align: center; }
-    .modal-box .lock { font-size: 44px; margin-bottom: 14px; }
-    .modal-box h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
-    .modal-box p  { font-size: 13px; color: #6b7280; margin-bottom: 22px; }
-    .pw-input { width: 100%; padding: 13px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 18px; text-align: center; letter-spacing: 6px; outline: none; margin-bottom: 10px; transition: border-color 0.2s; }
-    .pw-input:focus { border-color: #1a56db; }
-    .pw-input.err   { border-color: #dc2626; animation: shake 0.3s; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
-    .pw-error { font-size: 13px; color: #dc2626; min-height: 20px; margin-bottom: 12px; }
-    .modal-btn { width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
-    .modal-btn.primary   { background: #1a56db; color: white; }
-    .modal-btn.primary:hover { background: #1e40af; }
-    .modal-btn.secondary { background: #f3f4f6; color: #374151; }
-    .modal-btn.secondary:hover { background: #e5e7eb; }
+    /* FORM MODAL */
+    .form-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1100;align-items:center;justify-content:center;}
+    .form-bg.open{display:flex;}
+    .form-box{background:white;border-radius:20px;padding:30px;width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
+    .form-box h3{font-size:18px;font-weight:700;margin-bottom:18px;}
+    .form-box label{font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:6px;margin-top:14px;}
+    .form-box input[type="text"],.form-box select,.form-box textarea{width:100%;padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;font-family:inherit;transition:border-color 0.2s;}
+    .form-box input:focus,.form-box select:focus,.form-box textarea:focus{border-color:#1a56db;}
+    .form-box textarea{resize:vertical;}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .form-btns{display:flex;gap:10px;margin-top:22px;}
+    .form-btns .mbtn{margin:0;}
 
-    @media (max-width: 720px) { .section-grid { grid-template-columns: repeat(3,1fr); } }
-    @media (max-width: 480px) { .section-grid { grid-template-columns: repeat(2,1fr); } .tab-btn { padding: 12px; font-size: 12px; } }
+    @media(max-width:720px){.section-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.section-grid{grid-template-columns:repeat(2,1fr)}.tab-btn{padding:12px;font-size:12px}}
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- HEADER -->
 <header>
   <div class="header-left">
     <div class="eye-icon">👁️</div>
-    <div>
-      <h1>Consensus Eye CMU</h1>
-      <p>Chief Resident — Rule &amp; Consensus Management</p>
-    </div>
+    <div><h1>Consensus Eye CMU</h1><p>Chief Resident — Rule &amp; Consensus Management</p></div>
   </div>
   <button class="admin-btn" id="admin-btn" onclick="adminClick()">🔒 Admin</button>
 </header>
+<div class="admin-banner" id="admin-banner">⚙️ Admin Mode — คลิกที่ข้อความเพื่อแก้ไข &nbsp;|&nbsp; คลิก Admin อีกครั้งเพื่อออก</div>
+<div class="fb-bar" id="fb-bar">● กำลังเชื่อมต่อ...</div>
 
-<div class="admin-banner" id="admin-banner">
-  ⚙️ Admin Mode — คลิกที่ข้อความเพื่อแก้ไข &nbsp;|&nbsp; คลิก Admin อีกครั้งเพื่อออก
-</div>
-
-<!-- ── TAB BAR ── -->
+<!-- TABS -->
 <div class="tab-bar">
   <button class="tab-btn active" id="tab-btn-main"    onclick="switchTab('main')">หน้าหลัก</button>
   <button class="tab-btn"        id="tab-btn-history" onclick="switchTab('history')">หัวข้อการประชุมที่ผ่านมาทั้งหมด</button>
 </div>
 
-<!-- ── MAIN TAB ── -->
+<!-- MAIN TAB -->
 <div id="tab-main" class="tab-content active">
   <div class="container">
     <div class="page-title">Chief Resident Rules</div>
     <div class="page-subtitle">เลือก section เพื่อดู consensus และแนวปฏิบัติ</div>
-
     <div class="section-grid">
       <button class="section-btn" data-section="ward"     onclick="showSection('ward',this)"><div class="icon">🏥</div><div class="label">Ward</div><div class="sublabel">หอผู้ป่วย</div></button>
       <button class="section-btn" data-section="or"       onclick="showSection('or',this)"><div class="icon">🔬</div><div class="label">OR</div><div class="sublabel">ห้องผ่าตัด</div></button>
       <button class="section-btn" data-section="opd"      onclick="showSection('opd',this)"><div class="icon">🏛️</div><div class="label">OPD</div><div class="sublabel">ผู้ป่วยนอก</div></button>
       <button class="section-btn" data-section="handover" onclick="showSection('handover',this)"><div class="icon">📋</div><div class="label">CMVR</div><div class="sublabel">Handover</div></button>
-      <button class="section-btn" data-section="chief"    onclick="showSection('chief',this)"><div class="icon">🗣️</div><div class="label">นำเสนอปัญหา</div><div class="sublabel">ต่อ Chief</div></button>
+      <button class="section-btn" id="chief-btn" data-section="chief" onclick="showSection('chief',this)"><div class="vote-dot"></div><div class="icon">🗣️</div><div class="label">นำเสนอปัญหา</div><div class="sublabel">ต่อ Chief</div></button>
     </div>
-
     <div class="consensus-panel" id="consensus-panel">
       <div class="panel-header">
-        <div class="title-row">
-          <span id="panel-icon"></span>
-          <h2 id="panel-title"></h2>
-          <span class="badge" id="panel-badge"></span>
-        </div>
+        <div class="title-row"><span id="panel-icon"></span><h2 id="panel-title"></h2><span class="badge" id="panel-badge"></span></div>
         <div class="updated">อัพเดต: 28 พ.ค. 2569</div>
       </div>
       <div class="rules-list" id="rules-list"></div>
-      <div id="vote-footer"></div>
+      <div id="lobby-slot"></div>
+      <div id="footer-slot"></div>
     </div>
   </div>
 </div>
 
-<!-- ── HISTORY TAB ── -->
+<!-- HISTORY TAB -->
 <div id="tab-history" class="tab-content">
   <div class="container">
     <div class="page-title">หัวข้อการประชุมที่ผ่านมาทั้งหมด</div>
@@ -260,390 +251,569 @@
   </div>
 </div>
 
-<!-- ── PASSWORD MODAL ── -->
-<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
+<!-- PARTICIPANT BOTTOM SHEET -->
+<div class="p-sheet" id="p-sheet">
+  <div class="p-handle"></div>
+  <div class="p-badge">🗳️ VOTE NOW</div>
+  <div class="p-title" id="p-title"></div>
+  <div class="p-choices">
+    <div class="p-choice a"><div class="pc-lbl">ตัวเลือก A</div><div class="pc-txt" id="p-a"></div></div>
+    <div class="p-choice b"><div class="pc-lbl">ตัวเลือก B</div><div class="pc-txt" id="p-b"></div></div>
+  </div>
+  <button class="join-btn" id="join-btn" onclick="joinVote()">🗳️ เข้า VOTE</button>
+  <div class="p-count" id="p-count"></div>
+</div>
+
+<!-- VOTE OVERLAY -->
+<div class="v-overlay" id="v-overlay">
+  <!-- counting view -->
+  <div id="count-view" style="display:none;flex-direction:column;align-items:center;width:100%;max-width:700px;">
+    <div class="vs-lbl">🗳️ VOTING</div>
+    <div class="vs-title" id="cv-title"></div>
+    <div class="choices-grid">
+      <div class="c-card"><div class="c-lbl">ตัวเลือก A</div><div class="c-txt" id="cv-a"></div></div>
+      <div class="c-card"><div class="c-lbl">ตัวเลือก B</div><div class="c-txt" id="cv-b"></div></div>
+    </div>
+    <div class="countdown-num" id="cv-num">10</div>
+    <div class="vs-prompt" id="cv-prompt">กำลังนับถอยหลัง...</div>
+    <div class="winner-row" id="winner-row">
+      <div class="wr-lbl">Admin: เลือกผู้ชนะ</div>
+      <div class="wr-btns">
+        <button class="wr-btn a" onclick="setWinner('a')">A: <span id="w-a"></span></button>
+        <button class="wr-btn b" onclick="setWinner('b')">B: <span id="w-b"></span></button>
+      </div>
+    </div>
+  </div>
+  <!-- done view -->
+  <div class="done-view" id="done-view">
+    <div class="done-trophy">🏆</div>
+    <div class="done-lbl">ผลการโหวต</div>
+    <div class="done-topic" id="done-topic"></div>
+    <div class="done-winner" id="done-winner"></div>
+    <div class="done-btns">
+      <button class="save-btn" id="save-btn" style="display:none" onclick="saveResult()">💾 บันทึกผล</button>
+      <button class="close-btn" onclick="closeOverlay()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal-bg" id="pw-modal" onclick="if(event.target===this)closePwModal()">
   <div class="modal-box">
-    <div class="lock">🔐</div>
-    <h3>Admin Access</h3>
-    <p>กรอกรหัสผ่านเพื่อเข้าสู่ Edit Mode</p>
-    <input class="pw-input" type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"/>
-    <div class="pw-error" id="pw-error"></div>
-    <button class="modal-btn primary"   onclick="checkPw()">ยืนยัน</button>
-    <button class="modal-btn secondary" onclick="closeModal()">ยกเลิก</button>
+    <div class="lock">🔐</div><h3>Admin Access</h3><p>กรอกรหัสผ่านเพื่อเข้าสู่ Edit Mode</p>
+    <input class="pw-inp" type="password" id="pw-inp" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"/>
+    <div class="pw-err" id="pw-err"></div>
+    <button class="mbtn pri" onclick="checkPw()">ยืนยัน</button>
+    <button class="mbtn sec" onclick="closePwModal()">ยกเลิก</button>
   </div>
 </div>
 
-<!-- ── ADD TOPIC MODAL ── -->
-<div class="vsetup-overlay" id="add-overlay" onclick="addOverlayClick(event)">
-  <div class="vsetup-box">
+<!-- ADD TOPIC MODAL -->
+<div class="form-bg" id="add-modal" onclick="if(event.target===this)closeAddModal()">
+  <div class="form-box">
     <h3>➕ เพิ่ม Topic ใหม่</h3>
-    <label>หัวข้อ</label>
-    <input type="text" id="add-title" placeholder="ชื่อหัวข้อ" />
-    <label style="margin-top:12px;">รายละเอียด</label>
-    <textarea id="add-desc" rows="3" placeholder="รายละเอียด..." style="width:100%;padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;resize:vertical;font-family:inherit;transition:border-color 0.2s;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
-    <label style="margin-top:12px;">สถานะ</label>
-    <select id="add-tag">
-      <option value="รอประชุม">รอประชุม</option>
-      <option value="consensus">Consensus</option>
-    </select>
-    <div style="display:flex;gap:10px;margin-top:22px;">
-      <button class="modal-btn primary"   onclick="saveNewRule()" style="margin:0;background:#059669;">บันทึก</button>
-      <button class="modal-btn secondary" onclick="closeAddModal()" style="margin:0;">ยกเลิก</button>
+    <label>หัวข้อ *</label>
+    <input type="text" id="add-title" placeholder="ชื่อหัวข้อ"/>
+    <label>รายละเอียด</label>
+    <textarea id="add-desc" rows="3" placeholder="รายละเอียด..."></textarea>
+    <label>สถานะ</label>
+    <select id="add-tag"><option value="รอประชุม">รอประชุม</option><option value="consensus">Consensus</option></select>
+    <div class="form-btns">
+      <button class="mbtn pri" onclick="saveNewRule()" style="background:#059669;">บันทึก</button>
+      <button class="mbtn sec" onclick="closeAddModal()">ยกเลิก</button>
     </div>
   </div>
 </div>
 
-<!-- ── VOTE SETUP MODAL ── -->
-<div class="vsetup-overlay" id="vsetup-overlay" onclick="vsetupOverlayClick(event)">
-  <div class="vsetup-box">
+<!-- VOTE SETUP MODAL -->
+<div class="form-bg" id="vsetup-modal" onclick="if(event.target===this)closeVsetup()">
+  <div class="form-box">
     <h3>🗳️ ตั้งค่าการโหวต</h3>
-
-    <label>เลือกหัวข้อที่จะโหวต</label>
-    <select id="vote-topic-sel"></select>
-
-    <div class="choice-grid" style="margin-top:16px;">
-      <div>
-        <label>ตัวเลือก A</label>
-        <input type="text" id="vote-a" placeholder="เช่น 7.00 am" />
-      </div>
-      <div>
-        <label>ตัวเลือก B</label>
-        <input type="text" id="vote-b" placeholder="เช่น 8.00 am" />
-      </div>
+    <label>เลือกหัวข้อ</label>
+    <select id="v-topic-sel"></select>
+    <label style="margin-top:16px;">ตัวเลือก A และ B</label>
+    <div class="two-col">
+      <input type="text" id="v-a" placeholder="A: เช่น 7.00 am"/>
+      <input type="text" id="v-b" placeholder="B: เช่น 8.00 am"/>
     </div>
-
-    <div style="display:flex;gap:10px;margin-top:22px;">
-      <button class="modal-btn primary"   onclick="startVote()" style="margin:0;">▶ เริ่มโหวต</button>
-      <button class="modal-btn secondary" onclick="closeVsetup()" style="margin:0;">ยกเลิก</button>
+    <div class="form-btns">
+      <button class="mbtn pri" onclick="publishLobby()" style="background:#7c3aed;">📢 เปิดให้เข้า Vote</button>
+      <button class="mbtn sec" onclick="closeVsetup()">ยกเลิก</button>
     </div>
   </div>
 </div>
 
-<!-- ── VOTE COUNTDOWN SCREEN ── -->
-<div class="vote-screen" id="vote-screen">
-  <div class="vs-topic">🗳️ VOTE NOW</div>
-  <div class="vs-title" id="vs-title"></div>
-
-  <div class="choices-row">
-    <div class="choice-card">
-      <div class="clabel">ตัวเลือก A</div>
-      <div class="ctext" id="vs-a"></div>
-    </div>
-    <div class="choice-card">
-      <div class="clabel">ตัวเลือก B</div>
-      <div class="ctext" id="vs-b"></div>
-    </div>
-  </div>
-
-  <div class="vs-countdown" id="vs-countdown">10</div>
-  <div class="vs-prompt" id="vs-prompt">กำลังนับถอยหลัง...</div>
-
-  <div class="winner-row" id="winner-row">
-    <div class="winner-label">เลือกผู้ชนะ</div>
-    <div class="winner-btns">
-      <button class="winner-btn a" id="win-btn-a" onclick="setWinner('a')">A: <span id="win-a-text"></span></button>
-      <button class="winner-btn b" id="win-btn-b" onclick="setWinner('b')">B: <span id="win-b-text"></span></button>
-    </div>
-  </div>
-</div>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
 <script>
-  const ADMIN_PW = '13971397';
-  let isAdmin      = false;
-  let activeSection = null;
-  let voteState    = {}; // { ruleIdx, a, b }
-  let countdownTimer = null;
+// ════════════════════════════════════════════════════════
+//  FIREBASE CONFIG
+//  1. https://console.firebase.google.com → New project
+//  2. Add web app → copy config here
+//  3. Build → Realtime Database → Create → Test mode
+// ════════════════════════════════════════════════════════
+const FB = {
+  apiKey:            "REPLACE_apiKey",
+  authDomain:        "REPLACE.firebaseapp.com",
+  databaseURL:       "https://REPLACE-default-rtdb.firebaseio.com",
+  projectId:         "REPLACE",
+  storageBucket:     "REPLACE.appspot.com",
+  messagingSenderId: "REPLACE",
+  appId:             "REPLACE"
+};
 
-  // ── DEFAULT DATA ──────────────────────────────────────────────────────────
-  const defaultData = {
-    ward: { title: "Ward — หอผู้ป่วย", icon: "🏥", rules: [
-      { title:"Morning Round",    desc:"Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย", tag:"consensus", voteResult:"" },
-      { title:"รายงานผู้ป่วยใหม่",desc:"ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit", tag:"consensus", voteResult:"" },
-      { title:"ยาและ IV fluid",   desc:"Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign", tag:"รอประชุม", voteResult:"" },
-      { title:"Discharge Planning",desc:"วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน", tag:"consensus", voteResult:"" },
-      { title:"Emergency Call",   desc:"กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5", tag:"consensus", voteResult:"" }
-    ]},
-    or: { title: "OR — ห้องผ่าตัด", icon: "🔬", rules: [
-      { title:"Scrub & Brief",    desc:"Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent", tag:"consensus", voteResult:"" },
-      { title:"ลำดับ Case",       desc:"จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า", tag:"รอประชุม", voteResult:"" },
-      { title:"Emergency Case",   desc:"Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง", tag:"consensus", voteResult:"" },
-      { title:"Instrument Check", desc:"Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง", tag:"รอประชุม", voteResult:"" },
-      { title:"Post-op Note",     desc:"เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง", tag:"consensus", voteResult:"" }
-    ]},
-    opd: { title: "OPD — ผู้ป่วยนอก", icon: "🏛️", rules: [
-      { title:"การรับผู้ป่วย Walk-in", desc:"ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที", tag:"consensus", voteResult:"" },
-      { title:"Triage Protocol",       desc:"ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที", tag:"รอประชุม", voteResult:"" },
-      { title:"Referral",              desc:"การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน", tag:"consensus", voteResult:"" },
-      { title:"Follow-up Appointment", desc:"นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case", tag:"consensus", voteResult:"" }
-    ]},
-    handover: { title: "CMVR — Handover", icon: "📋", rules: [
-      { title:"เวลาส่งเวร",          desc:"ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร", tag:"consensus", voteResult:"" },
-      { title:"รายงาน Sick Patients", desc:"ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending", tag:"consensus", voteResult:"" },
-      { title:"ISBAR Format",         desc:"ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง", tag:"รอประชุม", voteResult:"" },
-      { title:"Pending Investigation", desc:"รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ", tag:"รอประชุม", voteResult:"" },
-      { title:"บันทึกการส่งเวร",     desc:"ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal", tag:"consensus", voteResult:"" }
-    ]},
-    chief: { title: "นำเสนอปัญหาต่อ Chief", icon: "🗣️", rules: [
-      { title:"เตรียมข้อมูลก่อนนำเสนอ", desc:"รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้", tag:"consensus", voteResult:"" },
-      { title:"ใช้ SBAR Format",         desc:"นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว", tag:"consensus", voteResult:"" },
-      { title:"ระบุปัญหาให้ชัดเจน",     desc:"บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส", tag:"รอประชุม", voteResult:"" },
-      { title:"ไม่นำเสนอขณะ Chief ยุ่ง", desc:"หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสม", tag:"รอประชุม", voteResult:"" },
-      { title:"บันทึกผลการปรึกษา",      desc:"จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident", tag:"consensus", voteResult:"" }
-    ]}
-  };
+let voteRef = null;
+const fbReady = !FB.apiKey.startsWith('REPLACE');
 
-  let data = (() => {
-    try { const s = localStorage.getItem('cmu_consensus'); return s ? JSON.parse(s) : JSON.parse(JSON.stringify(defaultData)); }
-    catch(e) { return JSON.parse(JSON.stringify(defaultData)); }
-  })();
+if (fbReady) {
+  try {
+    firebase.initializeApp(FB);
+    voteRef = firebase.database().ref('cmu_vote');
+    setFbBar('● Real-time sync เชื่อมต่อแล้ว', 'ok');
+  } catch(e) { setFbBar('● Firebase error: ' + e.message, 'err'); }
+} else {
+  setFbBar('● Real-time sync: ยังไม่ได้ตั้งค่า Firebase — ใช้งานได้บนหน้าจอนี้เท่านั้น', '');
+}
 
-  function persist() { localStorage.setItem('cmu_consensus', JSON.stringify(data)); }
+function setFbBar(msg, cls) {
+  const el = document.getElementById('fb-bar');
+  el.textContent = msg;
+  el.className = 'fb-bar' + (cls ? ' ' + cls : '');
+}
 
-  // ── HELPERS ───────────────────────────────────────────────────────────────
-  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function tagCls(t) { return t === 'consensus' ? 'tag-consensus' : 'tag-waiting'; }
-  function tagLbl(t) { return t === 'consensus' ? 'Consensus' : 'รอประชุม'; }
+// ════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════
+const ADMIN_PW = '13971397';
+let isAdmin      = false;
+let activeSec    = null;
+let addTarget    = null;
+let hasJoined    = false;
+let ticker       = null;
+let fbState      = { status: 'idle' };
 
-  // ── RENDER RULE ───────────────────────────────────────────────────────────
-  function ruleHTML(sKey, idx, r) {
-    const vr = r.voteResult || '';
-    if (isAdmin) {
-      return `
-        <div class="rule-item">
-          <div class="rule-num">${idx+1}</div>
-          <div class="rule-content">
-            <div class="rule-title">
-              <span contenteditable="true" onblur="saveField('${sKey}',${idx},'title',this)">${esc(r.title)}</span>${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="saveField('${sKey}',${idx},'voteResult',this)">— ${esc(vr)}</span>` : ''}
-            </div>
-            <div class="rule-desc" contenteditable="true" onblur="saveField('${sKey}',${idx},'desc',this)">${esc(r.desc)}</div>
-          </div>
-          <select class="tag-select" onchange="saveTag('${sKey}',${idx},this.value)">
-            <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
-            <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
-          </select>
-          <button class="delete-btn" onclick="deleteRule('${sKey}',${idx})" title="ลบ">🗑️</button>
-        </div>`;
-    }
-    return `
-      <div class="rule-item">
-        <div class="rule-num">${idx+1}</div>
-        <div class="rule-content">
-          <div class="rule-title">${esc(r.title)}${vr ? `&nbsp;<span class="vote-result">— ${esc(vr)}</span>` : ''}</div>
-          <div class="rule-desc">${esc(r.desc)}</div>
+// ── DEFAULT DATA ─────────────────────────────────────────
+const DEF = {
+  ward:     { title:"Ward — หอผู้ป่วย",     icon:"🏥", rules:[
+    {title:"Morning Round",        desc:"Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย",                      tag:"consensus", voteResult:""},
+    {title:"รายงานผู้ป่วยใหม่",   desc:"ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit",                                                 tag:"consensus", voteResult:""},
+    {title:"ยาและ IV fluid",       desc:"Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign",            tag:"รอประชุม",  voteResult:""},
+    {title:"Discharge Planning",   desc:"วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน",                        tag:"consensus", voteResult:""},
+    {title:"Emergency Call",       desc:"กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5",                             tag:"consensus", voteResult:""}
+  ]},
+  or:       { title:"OR — ห้องผ่าตัด",       icon:"🔬", rules:[
+    {title:"Scrub & Brief",        desc:"Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent",     tag:"consensus", voteResult:""},
+    {title:"ลำดับ Case",           desc:"จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า",                   tag:"รอประชุม",  voteResult:""},
+    {title:"Emergency Case",       desc:"Emergency ophthalmic surgery เช่น open globe, CRAO ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง",                        tag:"consensus", voteResult:""},
+    {title:"Instrument Check",     desc:"Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง",                                     tag:"รอประชุม",  voteResult:""},
+    {title:"Post-op Note",         desc:"เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง",              tag:"consensus", voteResult:""}
+  ]},
+  opd:      { title:"OPD — ผู้ป่วยนอก",      icon:"🏛️",rules:[
+    {title:"การรับผู้ป่วย Walk-in",desc:"ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที",                  tag:"consensus", voteResult:""},
+    {title:"Triage Protocol",      desc:"ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที",                                    tag:"รอประชุม",  voteResult:""},
+    {title:"Referral",             desc:"การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน",            tag:"consensus", voteResult:""},
+    {title:"Follow-up Appointment",desc:"นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case",                         tag:"consensus", voteResult:""}
+  ]},
+  handover: { title:"CMVR — Handover",        icon:"📋", rules:[
+    {title:"เวลาส่งเวร",           desc:"ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น.",                                                             tag:"consensus", voteResult:""},
+    {title:"รายงาน Sick Patients", desc:"ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending",            tag:"consensus", voteResult:""},
+    {title:"ISBAR Format",         desc:"ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง",                             tag:"รอประชุม",  voteResult:""},
+    {title:"Pending Investigation",desc:"รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ",                     tag:"รอประชุม",  voteResult:""},
+    {title:"บันทึกการส่งเวร",     desc:"ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal",                                               tag:"consensus", voteResult:""}
+  ]},
+  chief:    { title:"นำเสนอปัญหาต่อ Chief",   icon:"🗣️",rules:[
+    {title:"เตรียมข้อมูลก่อนนำเสนอ",desc:"รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้",                  tag:"consensus", voteResult:""},
+    {title:"ใช้ SBAR Format",      desc:"นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว",                        tag:"consensus", voteResult:""},
+    {title:"ระบุปัญหาให้ชัดเจน",  desc:"บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส",              tag:"รอประชุม",  voteResult:""},
+    {title:"ไม่นำเสนอขณะ Chief ยุ่ง",desc:"หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสม",                        tag:"รอประชุม",  voteResult:""},
+    {title:"บันทึกผลการปรึกษา",   desc:"จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident",                        tag:"consensus", voteResult:""}
+  ]}
+};
+
+let D = (() => {
+  try { const s = localStorage.getItem('cmu_v3'); return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEF)); }
+  catch(e) { return JSON.parse(JSON.stringify(DEF)); }
+})();
+
+function save() { localStorage.setItem('cmu_v3', JSON.stringify(D)); }
+
+// ════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const tagCls = t => t==='consensus' ? 'tag-consensus' : 'tag-waiting';
+const tagLbl = t => t==='consensus' ? 'Consensus' : 'รอประชุม';
+
+// ════════════════════════════════════════════════════════
+//  RENDER RULE
+// ════════════════════════════════════════════════════════
+function ruleHTML(sKey, i, r) {
+  const vr = r.voteResult || '';
+  if (isAdmin) return `
+    <div class="rule-item">
+      <div class="rule-num">${i+1}</div>
+      <div class="rule-content">
+        <div class="rule-title">
+          <span contenteditable="true" onblur="sf('${sKey}',${i},'title',this)">${esc(r.title)}</span>
+          ${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="sf('${sKey}',${i},'voteResult',this)">— ${esc(vr)}</span>` : ''}
         </div>
-        <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
-      </div>`;
-  }
+        <div class="rule-desc" contenteditable="true" onblur="sf('${sKey}',${i},'desc',this)">${esc(r.desc)}</div>
+      </div>
+      <select class="tag-select" onchange="st('${sKey}',${i},this.value)">
+        <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
+        <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
+      </select>
+      <button class="delete-btn" onclick="delRule('${sKey}',${i})">🗑️</button>
+    </div>`;
+  return `
+    <div class="rule-item">
+      <div class="rule-num">${i+1}</div>
+      <div class="rule-content">
+        <div class="rule-title">${esc(r.title)}${vr?`&nbsp;<span class="vote-result">— ${esc(vr)}</span>`:''}</div>
+        <div class="rule-desc">${esc(r.desc)}</div>
+      </div>
+      <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
+    </div>`;
+}
 
-  // ── SAVE EDITS ────────────────────────────────────────────────────────────
-  function saveField(sKey, idx, field, el) {
-    let val = el.innerText.trim();
-    if (field === 'voteResult' && val.startsWith('—')) val = val.replace(/^—\s*/, '');
-    data[sKey].rules[idx][field] = val;
-    persist();
-  }
+function sf(sKey, i, f, el) {
+  let v = el.innerText.trim();
+  if (f==='voteResult' && v.startsWith('—')) v = v.replace(/^—\s*/,'');
+  D[sKey].rules[i][f] = v; save();
+}
+function st(sKey, i, v) { D[sKey].rules[i].tag = v; save(); }
+function delRule(sKey, i) {
+  if (!isAdmin) return;
+  D[sKey].rules.splice(i,1); save();
+  if (activeSec===sKey) refreshPanel(sKey);
+  renderHistory();
+}
 
-  function saveTag(sKey, idx, val) { data[sKey].rules[idx].tag = val; persist(); }
+// ════════════════════════════════════════════════════════
+//  PANEL
+// ════════════════════════════════════════════════════════
+function showSection(key, btn) {
+  activeSec = key;
+  document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const sec = D[key];
+  document.getElementById('panel-icon').textContent  = sec.icon + ' ';
+  document.getElementById('panel-title').textContent = sec.title;
+  document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
+  document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(key,i,r)).join('');
+  renderLobbySlot();
+  document.getElementById('footer-slot').innerHTML  = buildFooter(key);
+  document.getElementById('consensus-panel').classList.add('visible');
+  document.getElementById('consensus-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 
-  function deleteRule(sKey, idx) {
-    if (!isAdmin) return;
-    data[sKey].rules.splice(idx, 1);
-    persist();
-    if (activeSection === sKey) refreshPanel(sKey);
+function refreshPanel(sKey) {
+  if (activeSec!==sKey) return;
+  const sec = D[sKey];
+  document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
+  document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(sKey,i,r)).join('');
+  renderLobbySlot();
+  document.getElementById('footer-slot').innerHTML  = buildFooter(sKey);
+}
+
+function buildFooter(sKey) {
+  if (!isAdmin) return '';
+  const voteOngoing = fbState.status && fbState.status!=='idle';
+  const vBtn = (sKey==='chief' && !voteOngoing)
+    ? `<button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button>` : '';
+  return `<div class="panel-footer"><button class="add-topic-btn" onclick="openAddModal('${sKey}')">➕ Add Topic</button>${vBtn}</div>`;
+}
+
+// Admin lobby slot inside panel
+function renderLobbySlot() {
+  const slot = document.getElementById('lobby-slot');
+  if (!slot) return;
+  if (!isAdmin || activeSec!=='chief' || !fbState || fbState.status!=='lobby') { slot.innerHTML=''; return; }
+  const s = fbState, count = s.participantCount||0;
+  slot.innerHTML = `
+    <div class="admin-lobby">
+      <h4>🟢 Vote Lobby เปิดแล้ว</h4>
+      <div class="al-topic">หัวข้อ: ${esc(s.topicTitle)}</div>
+      <div class="al-choices">
+        <div class="al-choice"><div class="alc-lbl">ตัวเลือก A</div><div class="alc-txt">${esc(s.choiceA)}</div></div>
+        <div class="al-choice"><div class="alc-lbl">ตัวเลือก B</div><div class="alc-txt">${esc(s.choiceB)}</div></div>
+      </div>
+      <div class="al-count" id="lobby-count">${count}</div>
+      <div class="al-count-lbl">คน กำลังรอ</div>
+      <div class="al-btns">
+        <button class="start-btn" onclick="beginCount()">▶ Start Vote</button>
+        <button class="cancel-btn" onclick="cancelVote()">ยกเลิก</button>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════════
+//  HISTORY
+// ════════════════════════════════════════════════════════
+const HK = ['ward','or','opd','handover'];
+function renderHistory() {
+  document.getElementById('history-content').innerHTML = HK.map(key => {
+    const sec = D[key];
+    return `<div class="history-section">
+      <div class="history-header"><span class="sec-icon">${sec.icon}</span><h3>${sec.title}</h3></div>
+      <div class="rules-list">${sec.rules.map((r,i)=>ruleHTML(key,i,r)).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════
+function switchTab(id) {
+  ['main','history'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active',t===id);
+    document.getElementById('tab-btn-'+t).classList.toggle('active',t===id);
+  });
+  if (id==='history') renderHistory();
+}
+
+// ════════════════════════════════════════════════════════
+//  ADMIN + PASSWORD
+// ════════════════════════════════════════════════════════
+function adminClick() {
+  if (isAdmin) {
+    isAdmin=false;
+    document.getElementById('admin-btn').classList.remove('on');
+    document.getElementById('admin-btn').innerHTML='🔒 Admin';
+    document.getElementById('admin-banner').classList.remove('show');
+    if (activeSec) refreshPanel(activeSec);
     renderHistory();
+  } else openPwModal();
+}
+
+function openPwModal() {
+  document.getElementById('pw-inp').value='';
+  document.getElementById('pw-err').textContent='';
+  document.getElementById('pw-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('pw-inp').focus(),80);
+}
+function closePwModal() { document.getElementById('pw-modal').classList.remove('open'); }
+
+function checkPw() {
+  const inp = document.getElementById('pw-inp');
+  if (inp.value===ADMIN_PW) {
+    isAdmin=true; closePwModal();
+    document.getElementById('admin-btn').classList.add('on');
+    document.getElementById('admin-btn').innerHTML='🔓 Admin ON';
+    document.getElementById('admin-banner').classList.add('show');
+    if (activeSec) refreshPanel(activeSec);
+    renderHistory();
+  } else {
+    document.getElementById('pw-err').textContent='รหัสผ่านไม่ถูกต้อง';
+    inp.classList.add('err'); setTimeout(()=>inp.classList.remove('err'),400);
+    inp.value=''; inp.focus();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  ADD TOPIC
+// ════════════════════════════════════════════════════════
+function openAddModal(sKey) {
+  addTarget=sKey;
+  document.getElementById('add-title').value='';
+  document.getElementById('add-desc').value='';
+  document.getElementById('add-tag').value='รอประชุม';
+  document.getElementById('add-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('add-title').focus(),80);
+}
+function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
+function saveNewRule() {
+  const title=document.getElementById('add-title').value.trim();
+  const desc =document.getElementById('add-desc').value.trim();
+  const tag  =document.getElementById('add-tag').value;
+  if (!title) { document.getElementById('add-title').focus(); return; }
+  D[addTarget].rules.push({title,desc,tag,voteResult:''});
+  save(); closeAddModal();
+  if (activeSec===addTarget) refreshPanel(addTarget);
+  renderHistory();
+}
+
+// ════════════════════════════════════════════════════════
+//  VOTE SETUP
+// ════════════════════════════════════════════════════════
+function openVsetup() {
+  document.getElementById('v-topic-sel').innerHTML =
+    D.chief.rules.map((r,i)=>`<option value="${i}">${esc(r.title)}</option>`).join('');
+  document.getElementById('v-a').value='';
+  document.getElementById('v-b').value='';
+  document.getElementById('vsetup-modal').classList.add('open');
+}
+function closeVsetup() { document.getElementById('vsetup-modal').classList.remove('open'); }
+
+function publishLobby() {
+  const idx = parseInt(document.getElementById('v-topic-sel').value);
+  const a   = document.getElementById('v-a').value.trim();
+  const b   = document.getElementById('v-b').value.trim();
+  if (!a||!b) { alert('กรุณากรอกตัวเลือก A และ B'); return; }
+  const newState = {status:'lobby', topicTitle:D.chief.rules[idx].title, topicRuleIdx:idx, choiceA:a, choiceB:b, startTime:0, winner:'', participantCount:0};
+  if (voteRef) voteRef.set(newState);
+  else applyState(newState);
+  closeVsetup();
+}
+
+function beginCount() {
+  if (!isAdmin) return;
+  const upd = {status:'voting', startTime: voteRef ? firebase.database.ServerValue.TIMESTAMP : Date.now()};
+  if (voteRef) voteRef.update(upd);
+  else applyState({...fbState, ...upd, startTime:Date.now()});
+}
+
+function joinVote() {
+  if (hasJoined) return;
+  hasJoined=true;
+  const btn=document.getElementById('join-btn');
+  btn.textContent='✅ เข้าร่วมแล้ว!'; btn.classList.add('joined');
+  if (voteRef) voteRef.child('participantCount').transaction(n=>(n||0)+1);
+  else { fbState.participantCount=(fbState.participantCount||0)+1; updatePCount(); }
+}
+
+function setWinner(c) {
+  clearInterval(ticker);
+  const text = c==='a' ? fbState.choiceA : fbState.choiceB;
+  if (voteRef) voteRef.update({status:'done',winner:text});
+  else applyState({...fbState,status:'done',winner:text});
+}
+
+function saveResult() {
+  if (!fbState||!fbState.winner) return;
+  const idx=fbState.topicRuleIdx;
+  if (idx>=0&&idx<D.chief.rules.length) { D.chief.rules[idx].voteResult=fbState.winner; save(); if(activeSec==='chief')refreshPanel('chief'); }
+  closeOverlay();
+}
+
+function cancelVote() {
+  clearInterval(ticker);
+  if (voteRef) voteRef.set({status:'idle'});
+  else applyState({status:'idle'});
+}
+
+function closeOverlay() {
+  document.getElementById('v-overlay').classList.remove('open');
+  clearInterval(ticker);
+  if (isAdmin) { if(voteRef) voteRef.set({status:'idle'}); else applyState({status:'idle'}); }
+}
+
+// ════════════════════════════════════════════════════════
+//  STATE MACHINE
+// ════════════════════════════════════════════════════════
+function applyState(s) {
+  if (!s) return;
+  fbState = s;
+  const active = s.status && s.status!=='idle';
+
+  // pulse chief button
+  document.getElementById('chief-btn').classList.toggle('vote-pulse', active);
+
+  // refresh footer / lobby slot
+  if (activeSec) {
+    document.getElementById('footer-slot').innerHTML = buildFooter(activeSec);
+    renderLobbySlot();
   }
 
-  // ── SHOW SECTION ──────────────────────────────────────────────────────────
-  function showSection(key, btn) {
-    activeSection = key;
-    document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const sec = data[key];
-    document.getElementById('panel-icon').textContent  = sec.icon + ' ';
-    document.getElementById('panel-title').textContent = sec.title;
-    document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
-    document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(key,i,r)).join('');
-    document.getElementById('vote-footer').innerHTML = buildFooter(key);
-    const panel = document.getElementById('consensus-panel');
-    panel.classList.add('visible');
-    panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  // update lobby count label if visible
+  updatePCount();
+
+  switch(s.status) {
+    case 'lobby':   showLobbySheet(s);  break;
+    case 'voting':  showCountdown(s);   break;
+    case 'done':    showDone(s);        break;
+    default:
+      document.getElementById('p-sheet').classList.remove('open');
+      document.getElementById('v-overlay').classList.remove('open');
+      clearInterval(ticker);
+      hasJoined=false;
   }
+}
 
-  function refreshPanel(sKey) {
-    const sec = data[sKey];
-    document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
-    document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(sKey,i,r)).join('');
-    document.getElementById('vote-footer').innerHTML = buildFooter(sKey);
-  }
+function updatePCount() {
+  const c = fbState.participantCount||0;
+  const el = document.getElementById('p-count');
+  if (el) el.textContent = c + ' คน กำลังรอ...';
+  const lc = document.getElementById('lobby-count');
+  if (lc) lc.textContent = c;
+}
 
-  // ── HISTORY TAB ───────────────────────────────────────────────────────────
-  const HISTORY_KEYS = ['ward','or','opd','handover'];
+// lobby → bottom sheet for participants
+function showLobbySheet(s) {
+  if (isAdmin) { document.getElementById('p-sheet').classList.remove('open'); return; }
+  document.getElementById('p-title').textContent = s.topicTitle||'';
+  document.getElementById('p-a').textContent     = s.choiceA||'';
+  document.getElementById('p-b').textContent     = s.choiceB||'';
+  const btn=document.getElementById('join-btn');
+  btn.textContent = hasJoined ? '✅ เข้าร่วมแล้ว!' : '🗳️ เข้า VOTE';
+  btn.className   = 'join-btn' + (hasJoined?' joined':'');
+  updatePCount();
+  document.getElementById('p-sheet').classList.add('open');
+  document.getElementById('v-overlay').classList.remove('open');
+}
 
-  function renderHistory() {
-    document.getElementById('history-content').innerHTML =
-      HISTORY_KEYS.map(key => {
-        const sec = data[key];
-        return `<div class="history-section">
-          <div class="history-header"><span class="sec-icon">${sec.icon}</span><h3>${sec.title}</h3></div>
-          <div class="rules-list">${sec.rules.map((r,i) => ruleHTML(key,i,r)).join('')}</div>
-        </div>`;
-      }).join('');
-  }
+// countdown → full-screen for everyone
+function showCountdown(s) {
+  clearInterval(ticker);
+  document.getElementById('p-sheet').classList.remove('open');
+  document.getElementById('cv-title').textContent = s.topicTitle||'';
+  document.getElementById('cv-a').textContent     = s.choiceA||'';
+  document.getElementById('cv-b').textContent     = s.choiceB||'';
+  document.getElementById('w-a').textContent      = s.choiceA||'';
+  document.getElementById('w-b').textContent      = s.choiceB||'';
+  document.getElementById('count-view').style.display = 'flex';
+  document.getElementById('done-view').classList.remove('show');
+  document.getElementById('winner-row').classList.remove('show');
+  document.getElementById('cv-prompt').textContent = 'กำลังนับถอยหลัง...';
+  document.getElementById('v-overlay').classList.add('open');
 
-  // ── TABS ──────────────────────────────────────────────────────────────────
-  function switchTab(id) {
-    ['main','history'].forEach(t => {
-      document.getElementById('tab-'+t).classList.toggle('active', t===id);
-      document.getElementById('tab-btn-'+t).classList.toggle('active', t===id);
-    });
-    if (id === 'history') renderHistory();
-  }
-
-  // ── ADMIN ─────────────────────────────────────────────────────────────────
-  function adminClick() {
-    if (isAdmin) {
-      isAdmin = false;
-      document.getElementById('admin-btn').classList.remove('on');
-      document.getElementById('admin-btn').innerHTML = '🔒 Admin';
-      document.getElementById('admin-banner').classList.remove('show');
-      if (activeSection) refreshPanel(activeSection);
-      renderHistory();
-    } else { openModal(); }
-  }
-
-  // ── PASSWORD MODAL ────────────────────────────────────────────────────────
-  function openModal() {
-    document.getElementById('modal-overlay').classList.add('open');
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-error').textContent = '';
-    setTimeout(() => document.getElementById('pw-input').focus(), 80);
-  }
-  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-  function overlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
-
-  function checkPw() {
-    const inp = document.getElementById('pw-input');
-    if (inp.value === ADMIN_PW) {
-      isAdmin = true; closeModal();
-      document.getElementById('admin-btn').classList.add('on');
-      document.getElementById('admin-btn').innerHTML = '🔓 Admin ON';
-      document.getElementById('admin-banner').classList.add('show');
-      if (activeSection) refreshPanel(activeSection);
-      renderHistory();
-    } else {
-      document.getElementById('pw-error').textContent = 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง';
-      inp.classList.add('err');
-      setTimeout(() => inp.classList.remove('err'), 400);
-      inp.value = ''; inp.focus();
+  const T = 10, t0 = s.startTime || Date.now();
+  function tick() {
+    const rem = Math.max(0, Math.ceil(T - (Date.now()-t0)/1000));
+    const el  = document.getElementById('cv-num');
+    el.textContent = rem;
+    el.classList.toggle('urgent', rem<=3);
+    if (rem<=0) {
+      clearInterval(ticker);
+      if (isAdmin) {
+        document.getElementById('cv-prompt').textContent = 'Admin: เลือกผู้ชนะ';
+        document.getElementById('winner-row').classList.add('show');
+      } else {
+        document.getElementById('cv-prompt').textContent = 'หมดเวลา! รอผล...';
+      }
     }
   }
+  tick();
+  ticker = setInterval(tick, 200);
+}
 
-  // ── VOTE SETUP ────────────────────────────────────────────────────────────
-  function openVsetup() {
-    const sel = document.getElementById('vote-topic-sel');
-    sel.innerHTML = data.chief.rules.map((r,i) => `<option value="${i}">${esc(r.title)}</option>`).join('');
-    document.getElementById('vote-a').value = '';
-    document.getElementById('vote-b').value = '';
-    document.getElementById('vsetup-overlay').classList.add('open');
-  }
-  function closeVsetup() { document.getElementById('vsetup-overlay').classList.remove('open'); }
-  function vsetupOverlayClick(e) { if (e.target===document.getElementById('vsetup-overlay')) closeVsetup(); }
+// done → show winner
+function showDone(s) {
+  clearInterval(ticker);
+  document.getElementById('p-sheet').classList.remove('open');
+  document.getElementById('count-view').style.display = 'none';
+  document.getElementById('done-topic').textContent  = s.topicTitle||'';
+  document.getElementById('done-winner').textContent = s.winner||'';
+  document.getElementById('save-btn').style.display  = isAdmin ? 'block' : 'none';
+  document.getElementById('done-view').classList.add('show');
+  document.getElementById('v-overlay').classList.add('open');
+}
 
-  function startVote() {
-    const idx = parseInt(document.getElementById('vote-topic-sel').value);
-    const a   = document.getElementById('vote-a').value.trim();
-    const b   = document.getElementById('vote-b').value.trim();
-    if (!a || !b) { alert('กรุณากรอกตัวเลือก A และ B ให้ครบ'); return; }
-    voteState = { ruleIdx: idx, a, b };
-    closeVsetup();
-    runVoteScreen();
-  }
+// ════════════════════════════════════════════════════════
+//  FIREBASE LISTENER
+// ════════════════════════════════════════════════════════
+if (voteRef) {
+  voteRef.on('value', snap => {
+    applyState(snap.val() || {status:'idle'});
+  }, err => setFbBar('● Firebase error: ' + err.message, 'err'));
+}
 
-  // ── VOTE COUNTDOWN ────────────────────────────────────────────────────────
-  function runVoteScreen() {
-    const rule = data.chief.rules[voteState.ruleIdx];
-    document.getElementById('vs-title').textContent = rule.title;
-    document.getElementById('vs-a').textContent     = voteState.a;
-    document.getElementById('vs-b').textContent     = voteState.b;
-    document.getElementById('win-a-text').textContent = voteState.a;
-    document.getElementById('win-b-text').textContent = voteState.b;
-    document.getElementById('vs-countdown').textContent = '10';
-    document.getElementById('vs-countdown').classList.remove('urgent');
-    document.getElementById('vs-prompt').textContent   = 'กำลังนับถอยหลัง...';
-    document.getElementById('winner-row').classList.remove('show');
-    document.getElementById('vote-screen').classList.add('open');
-
-    let t = 10;
-    countdownTimer = setInterval(() => {
-      t--;
-      const el = document.getElementById('vs-countdown');
-      el.textContent = t;
-      if (t <= 3) el.classList.add('urgent');
-      if (t <= 0) {
-        clearInterval(countdownTimer);
-        el.textContent = '⏱';
-        el.classList.remove('urgent');
-        document.getElementById('vs-prompt').textContent = 'หมดเวลา! Admin เลือกผู้ชนะ';
-        document.getElementById('winner-row').classList.add('show');
-      }
-    }, 1000);
-  }
-
-  function setWinner(choice) {
-    clearInterval(countdownTimer);
-    const text = choice === 'a' ? voteState.a : voteState.b;
-    data.chief.rules[voteState.ruleIdx].voteResult = text;
-    persist();
-    document.getElementById('vote-screen').classList.remove('open');
-    // refresh panel if chief is shown
-    if (activeSection === 'chief') refreshPanel('chief');
-  }
-
-  // ── FOOTER BUILDER ───────────────────────────────────────────────────────
-  function buildFooter(sKey) {
-    if (!isAdmin) return '';
-    const voteBtn = sKey === 'chief'
-      ? `<button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button>` : '';
-    return `<div class="panel-footer">
-      <button class="add-topic-btn" onclick="openAddModal('${sKey}')">➕ Add Topic</button>
-      ${voteBtn}
-    </div>`;
-  }
-
-  // ── ADD TOPIC ─────────────────────────────────────────────────────────────
-  let addTargetSection = null;
-
-  function openAddModal(sKey) {
-    addTargetSection = sKey;
-    document.getElementById('add-title').value = '';
-    document.getElementById('add-desc').value  = '';
-    document.getElementById('add-tag').value   = 'รอประชุม';
-    document.getElementById('add-overlay').classList.add('open');
-    setTimeout(() => document.getElementById('add-title').focus(), 80);
-  }
-
-  function closeAddModal() {
-    document.getElementById('add-overlay').classList.remove('open');
-  }
-
-  function addOverlayClick(e) {
-    if (e.target === document.getElementById('add-overlay')) closeAddModal();
-  }
-
-  function saveNewRule() {
-    const title = document.getElementById('add-title').value.trim();
-    const desc  = document.getElementById('add-desc').value.trim();
-    const tag   = document.getElementById('add-tag').value;
-    if (!title) { document.getElementById('add-title').focus(); return; }
-    data[addTargetSection].rules.push({ title, desc, tag, voteResult: '' });
-    persist();
-    closeAddModal();
-    if (activeSection === addTargetSection) refreshPanel(addTargetSection);
-    renderHistory();
-  }
-
-  // init
-  renderHistory();
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+renderHistory();
 </script>
 </body>
 </html>
