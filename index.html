@@ -14,440 +14,569 @@
       min-height: 100vh;
     }
 
+    /* ── HEADER ── */
     header {
       background: linear-gradient(135deg, #1a56db, #1e40af);
       color: white;
       padding: 20px 32px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-
+    .header-left { display: flex; align-items: center; gap: 14px; }
     header .eye-icon { font-size: 32px; }
-
-    header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.3px; }
+    header h1 { font-size: 20px; font-weight: 700; }
     header p  { font-size: 13px; opacity: 0.8; margin-top: 2px; }
 
-    .container { max-width: 900px; margin: 36px auto; padding: 0 20px; }
-
-    .page-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1e3a8a;
-      margin-bottom: 6px;
+    .admin-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.45);
+      background: transparent;
+      color: white;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .page-subtitle {
-      font-size: 14px;
-      color: #64748b;
-      margin-bottom: 28px;
-    }
+    .admin-btn:hover { background: rgba(255,255,255,0.15); }
+    .admin-btn.on { background: #dc2626; border-color: #dc2626; }
 
-    /* Section buttons */
+    /* ── ADMIN BANNER ── */
+    .admin-banner {
+      display: none;
+      background: #fff1f1;
+      border-bottom: 2px solid #fca5a5;
+      padding: 9px 32px;
+      font-size: 13px; font-weight: 600; color: #dc2626;
+      text-align: center;
+    }
+    .admin-banner.show { display: block; }
+
+    /* ── TABS ── */
+    .tab-bar {
+      background: white;
+      border-bottom: 2px solid #e5e7eb;
+      display: flex;
+      padding: 0 28px;
+      gap: 4px;
+    }
+    .tab-btn {
+      padding: 14px 20px;
+      font-size: 14px; font-weight: 600; color: #6b7280;
+      border: none; background: none; cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: #1a56db; }
+    .tab-btn.active { color: #1a56db; border-bottom-color: #1a56db; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 960px; margin: 36px auto; padding: 0 20px; }
+    .page-title { font-size: 22px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; }
+    .page-subtitle { font-size: 14px; color: #64748b; margin-bottom: 28px; }
+
+    /* ── SECTION BUTTONS ── */
     .section-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
+      gap: 14px;
       margin-bottom: 36px;
     }
-
     .section-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 20px 12px;
-      border: 2px solid transparent;
-      border-radius: 14px;
-      background: white;
-      cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 18px 10px;
+      border: 2px solid transparent; border-radius: 14px;
+      background: white; cursor: pointer;
       transition: all 0.2s ease;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
-
-    .section-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    }
-
-    .section-btn.active {
-      border-color: #1a56db;
-      background: #eff6ff;
-    }
-
+    .section-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+    .section-btn.active { border-color: #1a56db; background: #eff6ff; }
     .section-btn .icon {
-      font-size: 32px;
-      width: 56px; height: 56px;
+      font-size: 26px; width: 50px; height: 50px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-
-    .section-btn[data-section="ward"]   .icon { background: #dbeafe; }
-    .section-btn[data-section="or"]     .icon { background: #fce7f3; }
-    .section-btn[data-section="opd"]    .icon { background: #dcfce7; }
+    .section-btn[data-section="ward"]     .icon { background: #dbeafe; }
+    .section-btn[data-section="or"]       .icon { background: #fce7f3; }
+    .section-btn[data-section="opd"]      .icon { background: #dcfce7; }
     .section-btn[data-section="handover"] .icon { background: #fef3c7; }
     .section-btn[data-section="chief"]    .icon { background: #f3e8ff; }
 
-    .section-btn .label {
-      font-size: 15px;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .section-btn .sublabel {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
+    .section-btn .label   { font-size: 13px; font-weight: 600; color: #374151; text-align: center; }
+    .section-btn .sublabel{ font-size: 11px; color: #9ca3af; text-align: center; }
     .section-btn.active .label { color: #1a56db; }
 
-    /* Consensus panel */
+    /* ── CONSENSUS PANEL ── */
     .consensus-panel {
-      background: white;
-      border-radius: 16px;
+      background: white; border-radius: 16px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      overflow: hidden;
-      display: none;
+      overflow: hidden; display: none;
     }
-
     .consensus-panel.visible { display: block; }
 
     .panel-header {
-      padding: 18px 24px;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      padding: 18px 24px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; justify-content: space-between;
     }
-
-    .panel-header .title-row {
-      display: flex; align-items: center; gap: 10px;
-    }
+    .panel-header .title-row { display: flex; align-items: center; gap: 10px; }
     .panel-header .badge {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 99px;
-      background: #dbeafe;
-      color: #1a56db;
+      font-size: 12px; font-weight: 600;
+      padding: 3px 10px; border-radius: 99px;
+      background: #dbeafe; color: #1a56db;
     }
     .panel-header h2 { font-size: 17px; font-weight: 700; }
+    .panel-header .updated { font-size: 12px; color: #9ca3af; }
 
-    .panel-header .updated {
-      font-size: 12px; color: #9ca3af;
-    }
-
-    /* Rules list */
+    /* ── RULES LIST ── */
     .rules-list { padding: 8px 0; }
-
     .rule-item {
-      display: flex;
-      gap: 16px;
-      padding: 16px 24px;
+      display: flex; gap: 16px; padding: 16px 24px;
       border-bottom: 1px solid #f3f4f6;
-      align-items: flex-start;
-      transition: background 0.15s;
+      align-items: flex-start; transition: background 0.15s;
     }
     .rule-item:last-child { border-bottom: none; }
     .rule-item:hover { background: #f9fafb; }
 
     .rule-num {
-      min-width: 28px; height: 28px;
-      border-radius: 50%;
-      background: #1a56db;
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: #1a56db; color: white;
+      font-size: 13px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-
     .rule-content { flex: 1; }
     .rule-content .rule-title {
-      font-size: 14px; font-weight: 600; color: #111827;
-      margin-bottom: 4px;
+      font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px;
     }
     .rule-content .rule-desc {
       font-size: 13px; color: #6b7280; line-height: 1.5;
     }
 
-    .rule-tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 99px;
-      white-space: nowrap;
-      align-self: flex-start;
-      margin-top: 2px;
+    /* editable in admin mode */
+    [contenteditable="true"] {
+      outline: none;
+      border-bottom: 2px dashed #1a56db;
+      background: #eff6ff;
+      padding: 2px 4px; border-radius: 4px;
+      cursor: text; display: block;
+      min-width: 40px;
     }
-    .tag-required  { background: #fee2e2; color: #dc2626; }
-    .tag-important { background: #fef3c7; color: #d97706; }
-    .tag-info      { background: #dcfce7; color: #16a34a; }
 
-    /* Empty state */
-    .empty { text-align: center; padding: 48px; color: #9ca3af; }
-    .empty .big { font-size: 40px; margin-bottom: 12px; }
+    /* ── TAGS ── */
+    .rule-tag {
+      font-size: 11px; font-weight: 700;
+      padding: 4px 11px; border-radius: 99px;
+      white-space: nowrap; align-self: flex-start; margin-top: 2px;
+    }
+    .tag-consensus { background: #d1fae5; color: #047857; }
+    .tag-waiting   { background: #fef9c3; color: #92400e; }
 
-    /* Responsive */
-    @media (max-width: 640px) {
+    .tag-select {
+      font-size: 12px; font-weight: 600;
+      padding: 4px 10px; border-radius: 99px;
+      border: 2px solid #1a56db;
+      background: white; color: #1a56db;
+      cursor: pointer; align-self: flex-start; margin-top: 2px;
+    }
+
+    /* ── HISTORY TAB ── */
+    .history-section {
+      background: white; border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      overflow: hidden; margin-bottom: 24px;
+    }
+    .history-header {
+      padding: 15px 24px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 10px;
+      background: #f8fafc;
+    }
+    .history-header .sec-icon { font-size: 20px; }
+    .history-header h3 { font-size: 16px; font-weight: 700; color: #1e3a8a; }
+
+    /* ── PASSWORD MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: 20px;
+      padding: 36px 32px; width: 360px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .modal-box .lock { font-size: 44px; margin-bottom: 14px; }
+    .modal-box h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+    .modal-box p  { font-size: 13px; color: #6b7280; margin-bottom: 22px; }
+
+    .pw-input {
+      width: 100%; padding: 13px 16px;
+      border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: 18px; text-align: center; letter-spacing: 6px;
+      outline: none; margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .pw-input:focus { border-color: #1a56db; }
+    .pw-input.err   { border-color: #dc2626; animation: shake 0.3s; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-8px); }
+      75%      { transform: translateX(8px); }
+    }
+    .pw-error { font-size: 13px; color: #dc2626; min-height: 20px; margin-bottom: 12px; }
+
+    .modal-btn {
+      width: 100%; padding: 13px; border: none;
+      border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-bottom: 8px;
+    }
+    .modal-btn.primary   { background: #1a56db; color: white; }
+    .modal-btn.primary:hover { background: #1e40af; }
+    .modal-btn.secondary { background: #f3f4f6; color: #374151; }
+    .modal-btn.secondary:hover { background: #e5e7eb; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .section-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
       .section-grid { grid-template-columns: repeat(2, 1fr); }
+      .tab-btn { padding: 12px 12px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header>
-  <div class="eye-icon">👁️</div>
-  <div>
-    <h1>Consensus Eye CMU</h1>
-    <p>Chief Resident — Rule &amp; Consensus Management</p>
+  <div class="header-left">
+    <div class="eye-icon">👁️</div>
+    <div>
+      <h1>Consensus Eye CMU</h1>
+      <p>Chief Resident — Rule &amp; Consensus Management</p>
+    </div>
   </div>
+  <button class="admin-btn" id="admin-btn" onclick="adminClick()">🔒 Admin</button>
 </header>
 
-<div class="container">
+<div class="admin-banner" id="admin-banner">
+  ⚙️ Admin Mode — คลิกที่ข้อความเพื่อแก้ไข &nbsp;|&nbsp; คลิก Admin อีกครั้งเพื่อออก
+</div>
 
-  <div class="page-title">Chief Resident Rules</div>
-  <div class="page-subtitle">Select a section to view the consensus and guidelines</div>
+<!-- ── TAB BAR ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-btn-main" onclick="switchTab('main')">หน้าหลัก</button>
+  <button class="tab-btn" id="tab-btn-history" onclick="switchTab('history')">หัวข้อการประชุมที่ผ่านมาทั้งหมด</button>
+</div>
 
-  <!-- Section buttons -->
-  <div class="section-grid">
+<!-- ── MAIN TAB ── -->
+<div id="tab-main" class="tab-content active">
+  <div class="container">
+    <div class="page-title">Chief Resident Rules</div>
+    <div class="page-subtitle">เลือก section เพื่อดู consensus และแนวปฏิบัติ</div>
 
-    <button class="section-btn" data-section="ward" onclick="showSection('ward', this)">
-      <div class="icon">🏥</div>
-      <div class="label">Ward</div>
-      <div class="sublabel">หอผู้ป่วย</div>
-    </button>
-
-    <button class="section-btn" data-section="or" onclick="showSection('or', this)">
-      <div class="icon">🔬</div>
-      <div class="label">OR</div>
-      <div class="sublabel">ห้องผ่าตัด</div>
-    </button>
-
-    <button class="section-btn" data-section="opd" onclick="showSection('opd', this)">
-      <div class="icon">🏛️</div>
-      <div class="label">OPD</div>
-      <div class="sublabel">ผู้ป่วยนอก</div>
-    </button>
-
-    <button class="section-btn" data-section="handover" onclick="showSection('handover', this)">
-      <div class="icon">📋</div>
-      <div class="label">CMVR</div>
-      <div class="sublabel">Handover</div>
-    </button>
-
-    <button class="section-btn" data-section="chief" onclick="showSection('chief', this)">
-      <div class="icon">🗣️</div>
-      <div class="label">นำเสนอปัญหา</div>
-      <div class="sublabel">ต่อ Chief</div>
-    </button>
-
-  </div>
-
-  <!-- Consensus Panel (hidden by default) -->
-  <div class="consensus-panel" id="consensus-panel">
-
-    <div class="panel-header">
-      <div class="title-row">
-        <span id="panel-icon"></span>
-        <h2 id="panel-title"></h2>
-        <span class="badge" id="panel-badge"></span>
-      </div>
-      <div class="updated">อัพเดต: 28 พ.ค. 2569</div>
+    <div class="section-grid">
+      <button class="section-btn" data-section="ward" onclick="showSection('ward',this)">
+        <div class="icon">🏥</div>
+        <div class="label">Ward</div>
+        <div class="sublabel">หอผู้ป่วย</div>
+      </button>
+      <button class="section-btn" data-section="or" onclick="showSection('or',this)">
+        <div class="icon">🔬</div>
+        <div class="label">OR</div>
+        <div class="sublabel">ห้องผ่าตัด</div>
+      </button>
+      <button class="section-btn" data-section="opd" onclick="showSection('opd',this)">
+        <div class="icon">🏛️</div>
+        <div class="label">OPD</div>
+        <div class="sublabel">ผู้ป่วยนอก</div>
+      </button>
+      <button class="section-btn" data-section="handover" onclick="showSection('handover',this)">
+        <div class="icon">📋</div>
+        <div class="label">CMVR</div>
+        <div class="sublabel">Handover</div>
+      </button>
+      <button class="section-btn" data-section="chief" onclick="showSection('chief',this)">
+        <div class="icon">🗣️</div>
+        <div class="label">นำเสนอปัญหา</div>
+        <div class="sublabel">ต่อ Chief</div>
+      </button>
     </div>
 
-    <div class="rules-list" id="rules-list"></div>
-
+    <div class="consensus-panel" id="consensus-panel">
+      <div class="panel-header">
+        <div class="title-row">
+          <span id="panel-icon"></span>
+          <h2 id="panel-title"></h2>
+          <span class="badge" id="panel-badge"></span>
+        </div>
+        <div class="updated">อัพเดต: 28 พ.ค. 2569</div>
+      </div>
+      <div class="rules-list" id="rules-list"></div>
+    </div>
   </div>
+</div>
 
+<!-- ── HISTORY TAB ── -->
+<div id="tab-history" class="tab-content">
+  <div class="container">
+    <div class="page-title">หัวข้อการประชุมที่ผ่านมาทั้งหมด</div>
+    <div class="page-subtitle">รวม consensus และ rule จากทุก section (ยกเว้น นำเสนอปัญหาต่อ Chief)</div>
+    <div id="history-content"></div>
+  </div>
+</div>
+
+<!-- ── PASSWORD MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="overlayClick(event)">
+  <div class="modal-box">
+    <div class="lock">🔐</div>
+    <h3>Admin Access</h3>
+    <p>กรอกรหัสผ่านเพื่อเข้าสู่ Edit Mode</p>
+    <input class="pw-input" type="password" id="pw-input"
+      placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') checkPw()" />
+    <div class="pw-error" id="pw-error"></div>
+    <button class="modal-btn primary" onclick="checkPw()">ยืนยัน</button>
+    <button class="modal-btn secondary" onclick="closeModal()">ยกเลิก</button>
+  </div>
 </div>
 
 <script>
-  const data = {
+  const ADMIN_PW = '13971397';
+  let isAdmin = false;
+  let activeSection = null;
+
+  // ── DEFAULT DATA ──────────────────────────────────────────────────────────
+  const defaultData = {
     ward: {
-      title: "Ward — หอผู้ป่วย",
-      icon: "🏥",
-      badge: "Ward",
+      title: "Ward — หอผู้ป่วย", icon: "🏥",
       rules: [
-        {
-          title: "Morning Round",
-          desc: "Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย",
-          tag: "required"
-        },
-        {
-          title: "รายงานผู้ป่วยใหม่",
-          desc: "ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit",
-          tag: "required"
-        },
-        {
-          title: "ยาและ IV fluid",
-          desc: "Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign",
-          tag: "important"
-        },
-        {
-          title: "Discharge Planning",
-          desc: "วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน",
-          tag: "info"
-        },
-        {
-          title: "Emergency Call",
-          desc: "กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5",
-          tag: "required"
-        }
+        { title: "Morning Round", desc: "Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย", tag: "consensus" },
+        { title: "รายงานผู้ป่วยใหม่", desc: "ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit", tag: "consensus" },
+        { title: "ยาและ IV fluid", desc: "Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign", tag: "รอประชุม" },
+        { title: "Discharge Planning", desc: "วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน", tag: "consensus" },
+        { title: "Emergency Call", desc: "กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5", tag: "consensus" }
       ]
     },
     or: {
-      title: "OR — ห้องผ่าตัด",
-      icon: "🔬",
-      badge: "OR",
+      title: "OR — ห้องผ่าตัด", icon: "🔬",
       rules: [
-        {
-          title: "Scrub & Brief",
-          desc: "Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent",
-          tag: "required"
-        },
-        {
-          title: "ลำดับ Case",
-          desc: "จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า",
-          tag: "important"
-        },
-        {
-          title: "Emergency Case",
-          desc: "Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง",
-          tag: "required"
-        },
-        {
-          title: "Instrument Check",
-          desc: "Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง",
-          tag: "important"
-        },
-        {
-          title: "Post-op Note",
-          desc: "เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง",
-          tag: "info"
-        }
+        { title: "Scrub & Brief", desc: "Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent", tag: "consensus" },
+        { title: "ลำดับ Case", desc: "จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า", tag: "รอประชุม" },
+        { title: "Emergency Case", desc: "Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง", tag: "consensus" },
+        { title: "Instrument Check", desc: "Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง", tag: "รอประชุม" },
+        { title: "Post-op Note", desc: "เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง", tag: "consensus" }
       ]
     },
     opd: {
-      title: "OPD — ผู้ป่วยนอก",
-      icon: "🏛️",
-      badge: "OPD",
+      title: "OPD — ผู้ป่วยนอก", icon: "🏛️",
       rules: [
-        {
-          title: "การรับผู้ป่วย Walk-in",
-          desc: "ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที",
-          tag: "required"
-        },
-        {
-          title: "Triage Protocol",
-          desc: "ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที",
-          tag: "important"
-        },
-        {
-          title: "Referral",
-          desc: "การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน",
-          tag: "important"
-        },
-        {
-          title: "Follow-up Appointment",
-          desc: "นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case",
-          tag: "info"
-        }
-      ]
-    },
-    chief: {
-      title: "นำเสนอปัญหาต่อ Chief",
-      icon: "🗣️",
-      badge: "Chief",
-      rules: [
-        {
-          title: "เตรียมข้อมูลก่อนนำเสนอ",
-          desc: "รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้",
-          tag: "required"
-        },
-        {
-          title: "ใช้ SBAR Format",
-          desc: "นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว",
-          tag: "required"
-        },
-        {
-          title: "ระบุปัญหาให้ชัดเจน",
-          desc: "บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส",
-          tag: "important"
-        },
-        {
-          title: "ไม่นำเสนอขณะ Chief ยุ่ง",
-          desc: "หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสมหรือแจ้งก่อนว่าต้องการปรึกษา",
-          tag: "important"
-        },
-        {
-          title: "บันทึกผลการปรึกษา",
-          desc: "จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident",
-          tag: "info"
-        }
+        { title: "การรับผู้ป่วย Walk-in", desc: "ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที", tag: "consensus" },
+        { title: "Triage Protocol", desc: "ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที", tag: "รอประชุม" },
+        { title: "Referral", desc: "การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน", tag: "consensus" },
+        { title: "Follow-up Appointment", desc: "นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case", tag: "consensus" }
       ]
     },
     handover: {
-      title: "CMVR — Handover",
-      icon: "📋",
-      badge: "Handover",
+      title: "CMVR — Handover", icon: "📋",
       rules: [
-        {
-          title: "เวลาส่งเวร",
-          desc: "ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร",
-          tag: "required"
-        },
-        {
-          title: "รายงาน Sick Patients",
-          desc: "ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending",
-          tag: "required"
-        },
-        {
-          title: "ISBAR Format",
-          desc: "ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง",
-          tag: "important"
-        },
-        {
-          title: "Pending Investigation",
-          desc: "รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ",
-          tag: "important"
-        },
-        {
-          title: "บันทึกการส่งเวร",
-          desc: "ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal",
-          tag: "info"
-        }
+        { title: "เวลาส่งเวร", desc: "ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร", tag: "consensus" },
+        { title: "รายงาน Sick Patients", desc: "ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending", tag: "consensus" },
+        { title: "ISBAR Format", desc: "ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง", tag: "รอประชุม" },
+        { title: "Pending Investigation", desc: "รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ", tag: "รอประชุม" },
+        { title: "บันทึกการส่งเวร", desc: "ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal", tag: "consensus" }
+      ]
+    },
+    chief: {
+      title: "นำเสนอปัญหาต่อ Chief", icon: "🗣️",
+      rules: [
+        { title: "เตรียมข้อมูลก่อนนำเสนอ", desc: "รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้", tag: "consensus" },
+        { title: "ใช้ SBAR Format", desc: "นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว", tag: "consensus" },
+        { title: "ระบุปัญหาให้ชัดเจน", desc: "บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส", tag: "รอประชุม" },
+        { title: "ไม่นำเสนอขณะ Chief ยุ่ง", desc: "หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสม", tag: "รอประชุม" },
+        { title: "บันทึกผลการปรึกษา", desc: "จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident", tag: "consensus" }
       ]
     }
   };
 
-  const tagLabel = { required: "Required", important: "Important", info: "Info" };
+  // load from localStorage or default
+  let data = (() => {
+    try {
+      const s = localStorage.getItem('cmu_consensus');
+      return s ? JSON.parse(s) : JSON.parse(JSON.stringify(defaultData));
+    } catch(e) { return JSON.parse(JSON.stringify(defaultData)); }
+  })();
 
+  function persist() {
+    localStorage.setItem('cmu_consensus', JSON.stringify(data));
+  }
+
+  // ── TAG HELPERS ───────────────────────────────────────────────────────────
+  function tagCls(t)   { return t === 'consensus' ? 'tag-consensus' : 'tag-waiting'; }
+  function tagLbl(t)   { return t === 'consensus' ? 'Consensus' : 'รอประชุม'; }
+
+  // ── RENDER RULE ───────────────────────────────────────────────────────────
+  function ruleHTML(sKey, idx, r) {
+    if (isAdmin) {
+      return `
+        <div class="rule-item">
+          <div class="rule-num">${idx + 1}</div>
+          <div class="rule-content">
+            <div class="rule-title" contenteditable="true"
+              onblur="saveField('${sKey}',${idx},'title',this)">${esc(r.title)}</div>
+            <div class="rule-desc" contenteditable="true"
+              onblur="saveField('${sKey}',${idx},'desc',this)">${esc(r.desc)}</div>
+          </div>
+          <select class="tag-select" onchange="saveTag('${sKey}',${idx},this.value)">
+            <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
+            <option value="รอประชุม"  ${r.tag==='รอประชุม' ?'selected':''}>รอประชุม</option>
+          </select>
+        </div>`;
+    }
+    return `
+      <div class="rule-item">
+        <div class="rule-num">${idx + 1}</div>
+        <div class="rule-content">
+          <div class="rule-title">${esc(r.title)}</div>
+          <div class="rule-desc">${esc(r.desc)}</div>
+        </div>
+        <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
+      </div>`;
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── SAVE EDITS ────────────────────────────────────────────────────────────
+  function saveField(sKey, idx, field, el) {
+    data[sKey].rules[idx][field] = el.innerText.trim();
+    persist();
+  }
+
+  function saveTag(sKey, idx, val) {
+    data[sKey].rules[idx].tag = val;
+    persist();
+  }
+
+  // ── SHOW SECTION ──────────────────────────────────────────────────────────
   function showSection(key, btn) {
-    // Toggle active button
+    activeSection = key;
     document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    const section = data[key];
-    document.getElementById('panel-icon').textContent = section.icon + " ";
-    document.getElementById('panel-title').textContent = section.title;
-    document.getElementById('panel-badge').textContent = section.rules.length + " rules";
-
-    const list = document.getElementById('rules-list');
-    list.innerHTML = section.rules.map((r, i) => `
-      <div class="rule-item">
-        <div class="rule-num">${i + 1}</div>
-        <div class="rule-content">
-          <div class="rule-title">${r.title}</div>
-          <div class="rule-desc">${r.desc}</div>
-        </div>
-        <span class="rule-tag tag-${r.tag}">${tagLabel[r.tag]}</span>
-      </div>
-    `).join('');
+    const sec = data[key];
+    document.getElementById('panel-icon').textContent  = sec.icon + ' ';
+    document.getElementById('panel-title').textContent = sec.title;
+    document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
+    document.getElementById('rules-list').innerHTML    =
+      sec.rules.map((r, i) => ruleHTML(key, i, r)).join('');
 
     const panel = document.getElementById('consensus-panel');
     panel.classList.add('visible');
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+
+  // ── HISTORY TAB ───────────────────────────────────────────────────────────
+  const HISTORY_KEYS = ['ward', 'or', 'opd', 'handover'];
+
+  function renderHistory() {
+    document.getElementById('history-content').innerHTML =
+      HISTORY_KEYS.map(key => {
+        const sec = data[key];
+        return `
+          <div class="history-section">
+            <div class="history-header">
+              <span class="sec-icon">${sec.icon}</span>
+              <h3>${sec.title}</h3>
+            </div>
+            <div class="rules-list">
+              ${sec.rules.map((r, i) => ruleHTML(key, i, r)).join('')}
+            </div>
+          </div>`;
+      }).join('');
+  }
+
+  // ── TABS ──────────────────────────────────────────────────────────────────
+  function switchTab(id) {
+    ['main','history'].forEach(t => {
+      document.getElementById('tab-' + t).classList.toggle('active', t === id);
+      document.getElementById('tab-btn-' + t).classList.toggle('active', t === id);
+    });
+    if (id === 'history') renderHistory();
+  }
+
+  // ── ADMIN ─────────────────────────────────────────────────────────────────
+  function adminClick() {
+    if (isAdmin) {
+      isAdmin = false;
+      document.getElementById('admin-btn').classList.remove('on');
+      document.getElementById('admin-btn').innerHTML = '🔒 Admin';
+      document.getElementById('admin-banner').classList.remove('show');
+      // re-render current view in read-only
+      if (activeSection) {
+        const btn = document.querySelector(`.section-btn[data-section="${activeSection}"]`);
+        if (btn) showSection(activeSection, btn);
+      }
+      renderHistory();
+    } else {
+      openModal();
+    }
+  }
+
+  // ── MODAL ─────────────────────────────────────────────────────────────────
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('open');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-error').textContent = '';
+    setTimeout(() => document.getElementById('pw-input').focus(), 80);
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  function overlayClick(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  function checkPw() {
+    const inp = document.getElementById('pw-input');
+    if (inp.value === ADMIN_PW) {
+      isAdmin = true;
+      closeModal();
+      document.getElementById('admin-btn').classList.add('on');
+      document.getElementById('admin-btn').innerHTML = '🔓 Admin ON';
+      document.getElementById('admin-banner').classList.add('show');
+      if (activeSection) {
+        const btn = document.querySelector(`.section-btn[data-section="${activeSection}"]`);
+        if (btn) showSection(activeSection, btn);
+      }
+      renderHistory();
+    } else {
+      const err = document.getElementById('pw-error');
+      err.textContent = 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง';
+      inp.classList.add('err');
+      setTimeout(() => inp.classList.remove('err'), 400);
+      inp.value = '';
+      inp.focus();
+    }
+  }
+
+  // init
+  renderHistory();
 </script>
 
 </body>
