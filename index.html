@@ -6,74 +6,46 @@
   <title>Consensus Eye CMU — Chief Resident Rules</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      color: #1a202c;
-      min-height: 100vh;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; min-height: 100vh; }
 
     /* ── HEADER ── */
     header {
       background: linear-gradient(135deg, #1a56db, #1e40af);
-      color: white;
-      padding: 20px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      color: white; padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     .header-left { display: flex; align-items: center; gap: 14px; }
     header .eye-icon { font-size: 32px; }
     header h1 { font-size: 20px; font-weight: 700; }
     header p  { font-size: 13px; opacity: 0.8; margin-top: 2px; }
-
     .admin-btn {
       display: flex; align-items: center; gap: 8px;
-      padding: 9px 18px;
-      border-radius: 10px;
+      padding: 9px 18px; border-radius: 10px;
       border: 2px solid rgba(255,255,255,0.45);
-      background: transparent;
-      color: white;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: transparent; color: white;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
     }
     .admin-btn:hover { background: rgba(255,255,255,0.15); }
     .admin-btn.on { background: #dc2626; border-color: #dc2626; }
 
     /* ── ADMIN BANNER ── */
     .admin-banner {
-      display: none;
-      background: #fff1f1;
-      border-bottom: 2px solid #fca5a5;
-      padding: 9px 32px;
-      font-size: 13px; font-weight: 600; color: #dc2626;
-      text-align: center;
+      display: none; background: #fff1f1; border-bottom: 2px solid #fca5a5;
+      padding: 9px 32px; font-size: 13px; font-weight: 600; color: #dc2626; text-align: center;
     }
     .admin-banner.show { display: block; }
 
     /* ── TABS ── */
-    .tab-bar {
-      background: white;
-      border-bottom: 2px solid #e5e7eb;
-      display: flex;
-      padding: 0 28px;
-      gap: 4px;
-    }
+    .tab-bar { background: white; border-bottom: 2px solid #e5e7eb; display: flex; padding: 0 28px; }
     .tab-btn {
-      padding: 14px 20px;
-      font-size: 14px; font-weight: 600; color: #6b7280;
+      padding: 14px 20px; font-size: 14px; font-weight: 600; color: #6b7280;
       border: none; background: none; cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: all 0.2s;
-      white-space: nowrap;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: all 0.2s; white-space: nowrap;
     }
     .tab-btn:hover { color: #1a56db; }
     .tab-btn.active { color: #1a56db; border-bottom-color: #1a56db; }
-
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
@@ -83,25 +55,17 @@
     .page-subtitle { font-size: 14px; color: #64748b; margin-bottom: 28px; }
 
     /* ── SECTION BUTTONS ── */
-    .section-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-      margin-bottom: 36px;
-    }
+    .section-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 36px; }
     .section-btn {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      padding: 18px 10px;
-      border: 2px solid transparent; border-radius: 14px;
-      background: white; cursor: pointer;
-      transition: all 0.2s ease;
+      padding: 18px 10px; border: 2px solid transparent; border-radius: 14px;
+      background: white; cursor: pointer; transition: all 0.2s;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     .section-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
     .section-btn.active { border-color: #1a56db; background: #eff6ff; }
     .section-btn .icon {
-      font-size: 26px; width: 50px; height: 50px;
-      border-radius: 50%;
+      font-size: 26px; width: 50px; height: 50px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
     .section-btn[data-section="ward"]     .icon { background: #dbeafe; }
@@ -109,159 +73,122 @@
     .section-btn[data-section="opd"]      .icon { background: #dcfce7; }
     .section-btn[data-section="handover"] .icon { background: #fef3c7; }
     .section-btn[data-section="chief"]    .icon { background: #f3e8ff; }
-
     .section-btn .label   { font-size: 13px; font-weight: 600; color: #374151; text-align: center; }
     .section-btn .sublabel{ font-size: 11px; color: #9ca3af; text-align: center; }
     .section-btn.active .label { color: #1a56db; }
 
     /* ── CONSENSUS PANEL ── */
-    .consensus-panel {
-      background: white; border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      overflow: hidden; display: none;
-    }
+    .consensus-panel { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; display: none; }
     .consensus-panel.visible { display: block; }
-
     .panel-header {
       padding: 18px 24px; border-bottom: 1px solid #e5e7eb;
       display: flex; align-items: center; justify-content: space-between;
     }
     .panel-header .title-row { display: flex; align-items: center; gap: 10px; }
-    .panel-header .badge {
-      font-size: 12px; font-weight: 600;
-      padding: 3px 10px; border-radius: 99px;
-      background: #dbeafe; color: #1a56db;
-    }
+    .panel-header .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #dbeafe; color: #1a56db; }
     .panel-header h2 { font-size: 17px; font-weight: 700; }
     .panel-header .updated { font-size: 12px; color: #9ca3af; }
 
     /* ── RULES LIST ── */
     .rules-list { padding: 8px 0; }
-    .rule-item {
-      display: flex; gap: 16px; padding: 16px 24px;
-      border-bottom: 1px solid #f3f4f6;
-      align-items: flex-start; transition: background 0.15s;
-    }
+    .rule-item { display: flex; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #f3f4f6; align-items: flex-start; transition: background 0.15s; }
     .rule-item:last-child { border-bottom: none; }
     .rule-item:hover { background: #f9fafb; }
-
-    .rule-num {
-      min-width: 28px; height: 28px; border-radius: 50%;
-      background: #1a56db; color: white;
-      font-size: 13px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    .rule-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a56db; color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .rule-content { flex: 1; }
-    .rule-content .rule-title {
-      font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px;
-    }
-    .rule-content .rule-desc {
-      font-size: 13px; color: #6b7280; line-height: 1.5;
-    }
-
-    /* editable in admin mode */
-    [contenteditable="true"] {
-      outline: none;
-      border-bottom: 2px dashed #1a56db;
-      background: #eff6ff;
-      padding: 2px 4px; border-radius: 4px;
-      cursor: text; display: block;
-      min-width: 40px;
-    }
+    .rule-content .rule-title { font-size: 14px; font-weight: 600; color: #111827; margin-bottom: 4px; }
+    .rule-content .rule-desc  { font-size: 13px; color: #6b7280; line-height: 1.5; }
+    [contenteditable="true"] { outline: none; border-bottom: 2px dashed #1a56db; background: #eff6ff; padding: 2px 4px; border-radius: 4px; cursor: text; display: inline-block; min-width: 20px; }
 
     /* ── TAGS ── */
-    .rule-tag {
-      font-size: 11px; font-weight: 700;
-      padding: 4px 11px; border-radius: 99px;
-      white-space: nowrap; align-self: flex-start; margin-top: 2px;
-    }
+    .rule-tag { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 99px; white-space: nowrap; align-self: flex-start; margin-top: 2px; }
     .tag-consensus { background: #d1fae5; color: #047857; }
     .tag-waiting   { background: #fef9c3; color: #92400e; }
+    .tag-select { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; border: 2px solid #1a56db; background: white; color: #1a56db; cursor: pointer; align-self: flex-start; margin-top: 2px; }
 
-    .tag-select {
-      font-size: 12px; font-weight: 600;
-      padding: 4px 10px; border-radius: 99px;
-      border: 2px solid #1a56db;
-      background: white; color: #1a56db;
-      cursor: pointer; align-self: flex-start; margin-top: 2px;
-    }
-    .delete-btn {
-      background: none; border: none;
-      color: #dc2626; font-size: 17px;
-      cursor: pointer; padding: 3px 6px;
-      border-radius: 6px; align-self: flex-start;
-      margin-top: 0; flex-shrink: 0;
-      transition: background 0.15s;
-    }
+    /* ── DELETE ── */
+    .delete-btn { background: none; border: none; color: #dc2626; font-size: 17px; cursor: pointer; padding: 3px 6px; border-radius: 6px; align-self: flex-start; flex-shrink: 0; transition: background 0.15s; }
     .delete-btn:hover { background: #fee2e2; }
 
-    /* ── HISTORY TAB ── */
-    .history-section {
-      background: white; border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      overflow: hidden; margin-bottom: 24px;
-    }
-    .history-header {
-      padding: 15px 24px; border-bottom: 1px solid #e5e7eb;
+    /* ── VOTE RESULT (red) ── */
+    .vote-result { color: #dc2626; font-weight: 700; }
+    .vote-result-edit { color: #dc2626; font-weight: 700; border-bottom-color: #dc2626 !important; background: #fff1f1 !important; }
+
+    /* ── VOTE NOW FOOTER ── */
+    .vote-footer { padding: 20px 24px; border-top: 2px dashed #e5e7eb; display: flex; justify-content: center; }
+    .vote-now-btn {
       display: flex; align-items: center; gap: 10px;
-      background: #f8fafc;
+      padding: 13px 32px; background: #7c3aed; color: white;
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(124,58,237,0.3);
     }
+    .vote-now-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+
+    /* ── VOTE SETUP MODAL ── */
+    .vsetup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1100; align-items: center; justify-content: center; }
+    .vsetup-overlay.open { display: flex; }
+    .vsetup-box { background: white; border-radius: 20px; padding: 32px; width: 440px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+    .vsetup-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .vsetup-box label { font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 6px; margin-top: 14px; }
+    .vsetup-box select, .vsetup-box input[type="text"] {
+      width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px;
+      font-size: 14px; outline: none; transition: border-color 0.2s;
+    }
+    .vsetup-box select:focus, .vsetup-box input:focus { border-color: #7c3aed; }
+    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .choice-grid label { margin-top: 0; }
+
+    /* ── VOTE COUNTDOWN SCREEN ── */
+    .vote-screen { display: none; position: fixed; inset: 0; background: #1e1b4b; z-index: 1200; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+    .vote-screen.open { display: flex; }
+    .vs-topic { font-size: 16px; font-weight: 600; color: #c4b5fd; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .vs-title { font-size: 28px; font-weight: 800; color: white; text-align: center; margin-bottom: 36px; max-width: 700px; }
+    .choices-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 680px; margin-bottom: 36px; }
+    .choice-card { background: rgba(255,255,255,0.1); border: 3px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 28px 20px; text-align: center; color: white; }
+    .choice-card .clabel { font-size: 13px; font-weight: 600; opacity: 0.6; margin-bottom: 8px; }
+    .choice-card .ctext  { font-size: 24px; font-weight: 800; }
+    .vs-countdown { font-size: 88px; font-weight: 900; color: #a78bfa; line-height: 1; margin-bottom: 10px; }
+    .vs-countdown.urgent { color: #f87171; animation: vpulse 0.5s infinite alternate; }
+    @keyframes vpulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+    .vs-prompt { font-size: 15px; color: #c4b5fd; }
+
+    /* winner selection after countdown */
+    .winner-row { display: none; flex-direction: column; align-items: center; gap: 14px; }
+    .winner-row.show { display: flex; }
+    .winner-label { font-size: 17px; font-weight: 700; color: #e0d7ff; margin-bottom: 4px; }
+    .winner-btns { display: flex; gap: 16px; }
+    .winner-btn { flex: 1; min-width: 160px; padding: 18px 24px; border: none; border-radius: 16px; font-size: 18px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+    .winner-btn.a { background: #3b82f6; color: white; }
+    .winner-btn.a:hover { background: #2563eb; transform: scale(1.03); }
+    .winner-btn.b { background: #10b981; color: white; }
+    .winner-btn.b:hover { background: #059669; transform: scale(1.03); }
+
+    /* ── HISTORY TAB ── */
+    .history-section { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 24px; }
+    .history-header { padding: 15px 24px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 10px; background: #f8fafc; }
     .history-header .sec-icon { font-size: 20px; }
     .history-header h3 { font-size: 16px; font-weight: 700; color: #1e3a8a; }
 
     /* ── PASSWORD MODAL ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55); z-index: 1000;
-      align-items: center; justify-content: center;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: white; border-radius: 20px;
-      padding: 36px 32px; width: 360px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
-      text-align: center;
-    }
+    .modal-box { background: white; border-radius: 20px; padding: 36px 32px; width: 360px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); text-align: center; }
     .modal-box .lock { font-size: 44px; margin-bottom: 14px; }
     .modal-box h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
     .modal-box p  { font-size: 13px; color: #6b7280; margin-bottom: 22px; }
-
-    .pw-input {
-      width: 100%; padding: 13px 16px;
-      border: 2px solid #e5e7eb; border-radius: 10px;
-      font-size: 18px; text-align: center; letter-spacing: 6px;
-      outline: none; margin-bottom: 10px;
-      transition: border-color 0.2s;
-    }
+    .pw-input { width: 100%; padding: 13px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 18px; text-align: center; letter-spacing: 6px; outline: none; margin-bottom: 10px; transition: border-color 0.2s; }
     .pw-input:focus { border-color: #1a56db; }
     .pw-input.err   { border-color: #dc2626; animation: shake 0.3s; }
-
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25%      { transform: translateX(-8px); }
-      75%      { transform: translateX(8px); }
-    }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
     .pw-error { font-size: 13px; color: #dc2626; min-height: 20px; margin-bottom: 12px; }
-
-    .modal-btn {
-      width: 100%; padding: 13px; border: none;
-      border-radius: 10px; font-size: 15px; font-weight: 600;
-      cursor: pointer; margin-bottom: 8px;
-    }
+    .modal-btn { width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
     .modal-btn.primary   { background: #1a56db; color: white; }
     .modal-btn.primary:hover { background: #1e40af; }
     .modal-btn.secondary { background: #f3f4f6; color: #374151; }
     .modal-btn.secondary:hover { background: #e5e7eb; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 720px) {
-      .section-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .section-grid { grid-template-columns: repeat(2, 1fr); }
-      .tab-btn { padding: 12px 12px; font-size: 12px; }
-    }
+    @media (max-width: 720px) { .section-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 480px) { .section-grid { grid-template-columns: repeat(2,1fr); } .tab-btn { padding: 12px; font-size: 12px; } }
   </style>
 </head>
 <body>
@@ -284,8 +211,8 @@
 
 <!-- ── TAB BAR ── -->
 <div class="tab-bar">
-  <button class="tab-btn active" id="tab-btn-main" onclick="switchTab('main')">หน้าหลัก</button>
-  <button class="tab-btn" id="tab-btn-history" onclick="switchTab('history')">หัวข้อการประชุมที่ผ่านมาทั้งหมด</button>
+  <button class="tab-btn active" id="tab-btn-main"    onclick="switchTab('main')">หน้าหลัก</button>
+  <button class="tab-btn"        id="tab-btn-history" onclick="switchTab('history')">หัวข้อการประชุมที่ผ่านมาทั้งหมด</button>
 </div>
 
 <!-- ── MAIN TAB ── -->
@@ -295,31 +222,11 @@
     <div class="page-subtitle">เลือก section เพื่อดู consensus และแนวปฏิบัติ</div>
 
     <div class="section-grid">
-      <button class="section-btn" data-section="ward" onclick="showSection('ward',this)">
-        <div class="icon">🏥</div>
-        <div class="label">Ward</div>
-        <div class="sublabel">หอผู้ป่วย</div>
-      </button>
-      <button class="section-btn" data-section="or" onclick="showSection('or',this)">
-        <div class="icon">🔬</div>
-        <div class="label">OR</div>
-        <div class="sublabel">ห้องผ่าตัด</div>
-      </button>
-      <button class="section-btn" data-section="opd" onclick="showSection('opd',this)">
-        <div class="icon">🏛️</div>
-        <div class="label">OPD</div>
-        <div class="sublabel">ผู้ป่วยนอก</div>
-      </button>
-      <button class="section-btn" data-section="handover" onclick="showSection('handover',this)">
-        <div class="icon">📋</div>
-        <div class="label">CMVR</div>
-        <div class="sublabel">Handover</div>
-      </button>
-      <button class="section-btn" data-section="chief" onclick="showSection('chief',this)">
-        <div class="icon">🗣️</div>
-        <div class="label">นำเสนอปัญหา</div>
-        <div class="sublabel">ต่อ Chief</div>
-      </button>
+      <button class="section-btn" data-section="ward"     onclick="showSection('ward',this)"><div class="icon">🏥</div><div class="label">Ward</div><div class="sublabel">หอผู้ป่วย</div></button>
+      <button class="section-btn" data-section="or"       onclick="showSection('or',this)"><div class="icon">🔬</div><div class="label">OR</div><div class="sublabel">ห้องผ่าตัด</div></button>
+      <button class="section-btn" data-section="opd"      onclick="showSection('opd',this)"><div class="icon">🏛️</div><div class="label">OPD</div><div class="sublabel">ผู้ป่วยนอก</div></button>
+      <button class="section-btn" data-section="handover" onclick="showSection('handover',this)"><div class="icon">📋</div><div class="label">CMVR</div><div class="sublabel">Handover</div></button>
+      <button class="section-btn" data-section="chief"    onclick="showSection('chief',this)"><div class="icon">🗣️</div><div class="label">นำเสนอปัญหา</div><div class="sublabel">ต่อ Chief</div></button>
     </div>
 
     <div class="consensus-panel" id="consensus-panel">
@@ -332,6 +239,7 @@
         <div class="updated">อัพเดต: 28 พ.ค. 2569</div>
       </div>
       <div class="rules-list" id="rules-list"></div>
+      <div id="vote-footer"></div>
     </div>
   </div>
 </div>
@@ -351,100 +259,136 @@
     <div class="lock">🔐</div>
     <h3>Admin Access</h3>
     <p>กรอกรหัสผ่านเพื่อเข้าสู่ Edit Mode</p>
-    <input class="pw-input" type="password" id="pw-input"
-      placeholder="••••••••"
-      onkeydown="if(event.key==='Enter') checkPw()" />
+    <input class="pw-input" type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"/>
     <div class="pw-error" id="pw-error"></div>
-    <button class="modal-btn primary" onclick="checkPw()">ยืนยัน</button>
+    <button class="modal-btn primary"   onclick="checkPw()">ยืนยัน</button>
     <button class="modal-btn secondary" onclick="closeModal()">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- ── VOTE SETUP MODAL ── -->
+<div class="vsetup-overlay" id="vsetup-overlay" onclick="vsetupOverlayClick(event)">
+  <div class="vsetup-box">
+    <h3>🗳️ ตั้งค่าการโหวต</h3>
+
+    <label>เลือกหัวข้อที่จะโหวต</label>
+    <select id="vote-topic-sel"></select>
+
+    <div class="choice-grid" style="margin-top:16px;">
+      <div>
+        <label>ตัวเลือก A</label>
+        <input type="text" id="vote-a" placeholder="เช่น 7.00 am" />
+      </div>
+      <div>
+        <label>ตัวเลือก B</label>
+        <input type="text" id="vote-b" placeholder="เช่น 8.00 am" />
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:22px;">
+      <button class="modal-btn primary"   onclick="startVote()" style="margin:0;">▶ เริ่มโหวต</button>
+      <button class="modal-btn secondary" onclick="closeVsetup()" style="margin:0;">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── VOTE COUNTDOWN SCREEN ── -->
+<div class="vote-screen" id="vote-screen">
+  <div class="vs-topic">🗳️ VOTE NOW</div>
+  <div class="vs-title" id="vs-title"></div>
+
+  <div class="choices-row">
+    <div class="choice-card">
+      <div class="clabel">ตัวเลือก A</div>
+      <div class="ctext" id="vs-a"></div>
+    </div>
+    <div class="choice-card">
+      <div class="clabel">ตัวเลือก B</div>
+      <div class="ctext" id="vs-b"></div>
+    </div>
+  </div>
+
+  <div class="vs-countdown" id="vs-countdown">10</div>
+  <div class="vs-prompt" id="vs-prompt">กำลังนับถอยหลัง...</div>
+
+  <div class="winner-row" id="winner-row">
+    <div class="winner-label">เลือกผู้ชนะ</div>
+    <div class="winner-btns">
+      <button class="winner-btn a" id="win-btn-a" onclick="setWinner('a')">A: <span id="win-a-text"></span></button>
+      <button class="winner-btn b" id="win-btn-b" onclick="setWinner('b')">B: <span id="win-b-text"></span></button>
+    </div>
   </div>
 </div>
 
 <script>
   const ADMIN_PW = '13971397';
-  let isAdmin = false;
+  let isAdmin      = false;
   let activeSection = null;
+  let voteState    = {}; // { ruleIdx, a, b }
+  let countdownTimer = null;
 
   // ── DEFAULT DATA ──────────────────────────────────────────────────────────
   const defaultData = {
-    ward: {
-      title: "Ward — หอผู้ป่วย", icon: "🏥",
-      rules: [
-        { title: "Morning Round", desc: "Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย", tag: "consensus" },
-        { title: "รายงานผู้ป่วยใหม่", desc: "ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit", tag: "consensus" },
-        { title: "ยาและ IV fluid", desc: "Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign", tag: "รอประชุม" },
-        { title: "Discharge Planning", desc: "วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน", tag: "consensus" },
-        { title: "Emergency Call", desc: "กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5", tag: "consensus" }
-      ]
-    },
-    or: {
-      title: "OR — ห้องผ่าตัด", icon: "🔬",
-      rules: [
-        { title: "Scrub & Brief", desc: "Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent", tag: "consensus" },
-        { title: "ลำดับ Case", desc: "จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า", tag: "รอประชุม" },
-        { title: "Emergency Case", desc: "Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง", tag: "consensus" },
-        { title: "Instrument Check", desc: "Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง", tag: "รอประชุม" },
-        { title: "Post-op Note", desc: "เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง", tag: "consensus" }
-      ]
-    },
-    opd: {
-      title: "OPD — ผู้ป่วยนอก", icon: "🏛️",
-      rules: [
-        { title: "การรับผู้ป่วย Walk-in", desc: "ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที", tag: "consensus" },
-        { title: "Triage Protocol", desc: "ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที", tag: "รอประชุม" },
-        { title: "Referral", desc: "การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน", tag: "consensus" },
-        { title: "Follow-up Appointment", desc: "นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case", tag: "consensus" }
-      ]
-    },
-    handover: {
-      title: "CMVR — Handover", icon: "📋",
-      rules: [
-        { title: "เวลาส่งเวร", desc: "ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร", tag: "consensus" },
-        { title: "รายงาน Sick Patients", desc: "ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending", tag: "consensus" },
-        { title: "ISBAR Format", desc: "ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง", tag: "รอประชุม" },
-        { title: "Pending Investigation", desc: "รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ", tag: "รอประชุม" },
-        { title: "บันทึกการส่งเวร", desc: "ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal", tag: "consensus" }
-      ]
-    },
-    chief: {
-      title: "นำเสนอปัญหาต่อ Chief", icon: "🗣️",
-      rules: [
-        { title: "เตรียมข้อมูลก่อนนำเสนอ", desc: "รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้", tag: "consensus" },
-        { title: "ใช้ SBAR Format", desc: "นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว", tag: "consensus" },
-        { title: "ระบุปัญหาให้ชัดเจน", desc: "บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส", tag: "รอประชุม" },
-        { title: "ไม่นำเสนอขณะ Chief ยุ่ง", desc: "หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสม", tag: "รอประชุม" },
-        { title: "บันทึกผลการปรึกษา", desc: "จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident", tag: "consensus" }
-      ]
-    }
+    ward: { title: "Ward — หอผู้ป่วย", icon: "🏥", rules: [
+      { title:"Morning Round",    desc:"Chief resident ต้องทำ morning round ทุกวัน เวลา 07:00 น. พร้อม intern และรายงานสถานะผู้ป่วยทุกราย", tag:"consensus", voteResult:"" },
+      { title:"รายงานผู้ป่วยใหม่",desc:"ผู้ป่วย admit ใหม่ทุกรายต้องรายงานแก่ attending ภายใน 30 นาทีหลัง admit", tag:"consensus", voteResult:"" },
+      { title:"ยาและ IV fluid",   desc:"Resident ต้องตรวจ medication chart และ IV fluid ทุกเวร ห้ามให้ intern order ยา high alert โดยไม่มีการ co-sign", tag:"รอประชุม", voteResult:"" },
+      { title:"Discharge Planning",desc:"วางแผน discharge ตั้งแต่วันแรกที่ admit ประสานงานกับ social worker หากมีปัญหาด้านการดูแลที่บ้าน", tag:"consensus", voteResult:"" },
+      { title:"Emergency Call",   desc:"กรณีผู้ป่วย deteriorate ต้องประเมิน MEWS score ทันที และแจ้ง on-call attending หากคะแนน ≥ 5", tag:"consensus", voteResult:"" }
+    ]},
+    or: { title: "OR — ห้องผ่าตัด", icon: "🔬", rules: [
+      { title:"Scrub & Brief",    desc:"Chief resident ต้องเข้าร่วม surgical brief ก่อนเริ่ม case ทุกครั้ง ตรวจสอบ patient identity, site marking, consent", tag:"consensus", voteResult:"" },
+      { title:"ลำดับ Case",       desc:"จัด OR list ล่วงหน้าอย่างน้อย 1 วัน ประสาน scrub nurse และ anesthesia team ยืนยันลำดับผ่าตัดทุกเช้า", tag:"รอประชุม", voteResult:"" },
+      { title:"Emergency Case",   desc:"Emergency ophthalmic surgery เช่น open globe, central retinal artery occlusion ต้องแจ้ง attending และจัด OR ภายใน 1 ชั่วโมง", tag:"consensus", voteResult:"" },
+      { title:"Instrument Check", desc:"Resident ดูแลให้มีการ count instrument, sponge, needle ก่อนและหลัง closure ทุกครั้ง", tag:"รอประชุม", voteResult:"" },
+      { title:"Post-op Note",     desc:"เขียน operative note ใน EMR ให้เสร็จก่อนออกจาก OR complex และ attending ต้อง countersign ภายใน 24 ชั่วโมง", tag:"consensus", voteResult:"" }
+    ]},
+    opd: { title: "OPD — ผู้ป่วยนอก", icon: "🏛️", rules: [
+      { title:"การรับผู้ป่วย Walk-in", desc:"ผู้ป่วย walk-in ที่มีอาการ vision loss เฉียบพลัน, eye pain, trauma ต้องได้รับการประเมินภายใน 15 นาที", tag:"consensus", voteResult:"" },
+      { title:"Triage Protocol",       desc:"ใช้ CTAS eye triage ในการคัดแยก: Level 1 ทันที, Level 2 ≤ 15 นาที, Level 3 ≤ 30 นาที", tag:"รอประชุม", voteResult:"" },
+      { title:"Referral",              desc:"การส่ง refer ผู้ป่วยออกนอกโรงพยาบาล resident ต้อง discuss กับ attending และเขียน referral letter ที่ครบถ้วน", tag:"consensus", voteResult:"" },
+      { title:"Follow-up Appointment", desc:"นัด follow-up ต้องระบุเหตุผลและ urgency ชัดเจน ห้ามนัดกว้างกว่า 1 สัปดาห์สำหรับ post-op case", tag:"consensus", voteResult:"" }
+    ]},
+    handover: { title: "CMVR — Handover", icon: "📋", rules: [
+      { title:"เวลาส่งเวร",          desc:"ส่งเวรตรงเวลา เช้า 07:00 น. / เย็น 17:00 น. / ดึก 00:00 น. ห้ามออกจากพื้นที่ก่อนได้รับการยืนยันจากทีมรับเวร", tag:"consensus", voteResult:"" },
+      { title:"รายงาน Sick Patients", desc:"ต้องรายงาน patient ที่มี concern ทุกราย พร้อม pending task, plan, และ trigger ที่ต้องแจ้ง on-call attending", tag:"consensus", voteResult:"" },
+      { title:"ISBAR Format",         desc:"ใช้ ISBAR (Identify, Situation, Background, Assessment, Recommendation) ในการส่งเวรทุกครั้ง", tag:"รอประชุม", voteResult:"" },
+      { title:"Pending Investigation", desc:"รายงาน lab, imaging, หรือ consult ที่ยังรอผล พร้อมระบุว่าต้องติดตามเมื่อใดและควรทำอะไรหากผิดปกติ", tag:"รอประชุม", voteResult:"" },
+      { title:"บันทึกการส่งเวร",     desc:"ต้องบันทึก handover ใน EMR ทุกครั้ง สำหรับ documentation และ medicolegal", tag:"consensus", voteResult:"" }
+    ]},
+    chief: { title: "นำเสนอปัญหาต่อ Chief", icon: "🗣️", rules: [
+      { title:"เตรียมข้อมูลก่อนนำเสนอ", desc:"รวบรวมข้อมูลให้ครบ: ชื่อผู้ป่วย, อายุ, diagnosis, timeline, investigation ที่ส่งไปแล้วและผลที่ได้", tag:"consensus", voteResult:"" },
+      { title:"ใช้ SBAR Format",         desc:"นำเสนอตาม Situation → Background → Assessment → Recommendation เพื่อให้ Chief เข้าใจได้รวดเร็ว", tag:"consensus", voteResult:"" },
+      { title:"ระบุปัญหาให้ชัดเจน",     desc:"บอก Chief ว่าต้องการ input ในด้านใด เช่น การวินิจฉัย, แผนการรักษา, การส่ง refer หรือการบริหารจัดการเคส", tag:"รอประชุม", voteResult:"" },
+      { title:"ไม่นำเสนอขณะ Chief ยุ่ง", desc:"หลีกเลี่ยงการนำเสนอระหว่าง procedure หรือ round ยกเว้น emergency ให้รอช่วงเวลาที่เหมาะสม", tag:"รอประชุม", voteResult:"" },
+      { title:"บันทึกผลการปรึกษา",      desc:"จดบันทึก plan ที่ได้รับจาก Chief และ update ใน EMR พร้อมระบุว่า discussed with Chief Resident", tag:"consensus", voteResult:"" }
+    ]}
   };
 
-  // load from localStorage or default
   let data = (() => {
-    try {
-      const s = localStorage.getItem('cmu_consensus');
-      return s ? JSON.parse(s) : JSON.parse(JSON.stringify(defaultData));
-    } catch(e) { return JSON.parse(JSON.stringify(defaultData)); }
+    try { const s = localStorage.getItem('cmu_consensus'); return s ? JSON.parse(s) : JSON.parse(JSON.stringify(defaultData)); }
+    catch(e) { return JSON.parse(JSON.stringify(defaultData)); }
   })();
 
-  function persist() {
-    localStorage.setItem('cmu_consensus', JSON.stringify(data));
-  }
+  function persist() { localStorage.setItem('cmu_consensus', JSON.stringify(data)); }
 
-  // ── TAG HELPERS ───────────────────────────────────────────────────────────
-  function tagCls(t)   { return t === 'consensus' ? 'tag-consensus' : 'tag-waiting'; }
-  function tagLbl(t)   { return t === 'consensus' ? 'Consensus' : 'รอประชุม'; }
+  // ── HELPERS ───────────────────────────────────────────────────────────────
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function tagCls(t) { return t === 'consensus' ? 'tag-consensus' : 'tag-waiting'; }
+  function tagLbl(t) { return t === 'consensus' ? 'Consensus' : 'รอประชุม'; }
 
   // ── RENDER RULE ───────────────────────────────────────────────────────────
   function ruleHTML(sKey, idx, r) {
+    const vr = r.voteResult || '';
     if (isAdmin) {
       return `
         <div class="rule-item">
-          <div class="rule-num">${idx + 1}</div>
+          <div class="rule-num">${idx+1}</div>
           <div class="rule-content">
-            <div class="rule-title" contenteditable="true"
-              onblur="saveField('${sKey}',${idx},'title',this)">${esc(r.title)}</div>
-            <div class="rule-desc" contenteditable="true"
-              onblur="saveField('${sKey}',${idx},'desc',this)">${esc(r.desc)}</div>
+            <div class="rule-title">
+              <span contenteditable="true" onblur="saveField('${sKey}',${idx},'title',this)">${esc(r.title)}</span>${vr ? `&nbsp;<span class="vote-result vote-result-edit" contenteditable="true" onblur="saveField('${sKey}',${idx},'voteResult',this)">— ${esc(vr)}</span>` : ''}
+            </div>
+            <div class="rule-desc" contenteditable="true" onblur="saveField('${sKey}',${idx},'desc',this)">${esc(r.desc)}</div>
           </div>
           <select class="tag-select" onchange="saveTag('${sKey}',${idx},this.value)">
             <option value="consensus" ${r.tag==='consensus'?'selected':''}>Consensus</option>
@@ -455,41 +399,30 @@
     }
     return `
       <div class="rule-item">
-        <div class="rule-num">${idx + 1}</div>
+        <div class="rule-num">${idx+1}</div>
         <div class="rule-content">
-          <div class="rule-title">${esc(r.title)}</div>
+          <div class="rule-title">${esc(r.title)}${vr ? `&nbsp;<span class="vote-result">— ${esc(vr)}</span>` : ''}</div>
           <div class="rule-desc">${esc(r.desc)}</div>
         </div>
         <span class="rule-tag ${tagCls(r.tag)}">${tagLbl(r.tag)}</span>
       </div>`;
   }
 
-  function esc(s) {
-    return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
   // ── SAVE EDITS ────────────────────────────────────────────────────────────
   function saveField(sKey, idx, field, el) {
-    data[sKey].rules[idx][field] = el.innerText.trim();
+    let val = el.innerText.trim();
+    if (field === 'voteResult' && val.startsWith('—')) val = val.replace(/^—\s*/, '');
+    data[sKey].rules[idx][field] = val;
     persist();
   }
 
-  function saveTag(sKey, idx, val) {
-    data[sKey].rules[idx].tag = val;
-    persist();
-  }
+  function saveTag(sKey, idx, val) { data[sKey].rules[idx].tag = val; persist(); }
 
   function deleteRule(sKey, idx) {
     if (!isAdmin) return;
     data[sKey].rules.splice(idx, 1);
     persist();
-    if (activeSection === sKey) {
-      document.getElementById('rules-list').innerHTML =
-        data[sKey].rules.map((r, i) => ruleHTML(sKey, i, r)).join('');
-      document.getElementById('panel-badge').textContent = data[sKey].rules.length + ' rules';
-    }
+    if (activeSection === sKey) refreshPanel(sKey);
     renderHistory();
   }
 
@@ -498,44 +431,48 @@
     activeSection = key;
     document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const sec = data[key];
     document.getElementById('panel-icon').textContent  = sec.icon + ' ';
     document.getElementById('panel-title').textContent = sec.title;
     document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
-    document.getElementById('rules-list').innerHTML    =
-      sec.rules.map((r, i) => ruleHTML(key, i, r)).join('');
-
+    document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(key,i,r)).join('');
+    // Vote footer: only for chief section and admin
+    const vf = document.getElementById('vote-footer');
+    vf.innerHTML = (key === 'chief' && isAdmin)
+      ? `<div class="vote-footer"><button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button></div>` : '';
     const panel = document.getElementById('consensus-panel');
     panel.classList.add('visible');
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+
+  function refreshPanel(sKey) {
+    const sec = data[sKey];
+    document.getElementById('panel-badge').textContent = sec.rules.length + ' rules';
+    document.getElementById('rules-list').innerHTML    = sec.rules.map((r,i) => ruleHTML(sKey,i,r)).join('');
+    const vf = document.getElementById('vote-footer');
+    vf.innerHTML = (sKey === 'chief' && isAdmin)
+      ? `<div class="vote-footer"><button class="vote-now-btn" onclick="openVsetup()">🗳️ Vote Now</button></div>` : '';
   }
 
   // ── HISTORY TAB ───────────────────────────────────────────────────────────
-  const HISTORY_KEYS = ['ward', 'or', 'opd', 'handover'];
+  const HISTORY_KEYS = ['ward','or','opd','handover'];
 
   function renderHistory() {
     document.getElementById('history-content').innerHTML =
       HISTORY_KEYS.map(key => {
         const sec = data[key];
-        return `
-          <div class="history-section">
-            <div class="history-header">
-              <span class="sec-icon">${sec.icon}</span>
-              <h3>${sec.title}</h3>
-            </div>
-            <div class="rules-list">
-              ${sec.rules.map((r, i) => ruleHTML(key, i, r)).join('')}
-            </div>
-          </div>`;
+        return `<div class="history-section">
+          <div class="history-header"><span class="sec-icon">${sec.icon}</span><h3>${sec.title}</h3></div>
+          <div class="rules-list">${sec.rules.map((r,i) => ruleHTML(key,i,r)).join('')}</div>
+        </div>`;
       }).join('');
   }
 
   // ── TABS ──────────────────────────────────────────────────────────────────
   function switchTab(id) {
     ['main','history'].forEach(t => {
-      document.getElementById('tab-' + t).classList.toggle('active', t === id);
-      document.getElementById('tab-btn-' + t).classList.toggle('active', t === id);
+      document.getElementById('tab-'+t).classList.toggle('active', t===id);
+      document.getElementById('tab-btn-'+t).classList.toggle('active', t===id);
     });
     if (id === 'history') renderHistory();
   }
@@ -547,59 +484,101 @@
       document.getElementById('admin-btn').classList.remove('on');
       document.getElementById('admin-btn').innerHTML = '🔒 Admin';
       document.getElementById('admin-banner').classList.remove('show');
-      // re-render current view in read-only
-      if (activeSection) {
-        const btn = document.querySelector(`.section-btn[data-section="${activeSection}"]`);
-        if (btn) showSection(activeSection, btn);
-      }
+      if (activeSection) refreshPanel(activeSection);
       renderHistory();
-    } else {
-      openModal();
-    }
+    } else { openModal(); }
   }
 
-  // ── MODAL ─────────────────────────────────────────────────────────────────
+  // ── PASSWORD MODAL ────────────────────────────────────────────────────────
   function openModal() {
     document.getElementById('modal-overlay').classList.add('open');
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-error').textContent = '';
     setTimeout(() => document.getElementById('pw-input').focus(), 80);
   }
-
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-
-  function overlayClick(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  }
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+  function overlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
 
   function checkPw() {
     const inp = document.getElementById('pw-input');
     if (inp.value === ADMIN_PW) {
-      isAdmin = true;
-      closeModal();
+      isAdmin = true; closeModal();
       document.getElementById('admin-btn').classList.add('on');
       document.getElementById('admin-btn').innerHTML = '🔓 Admin ON';
       document.getElementById('admin-banner').classList.add('show');
-      if (activeSection) {
-        const btn = document.querySelector(`.section-btn[data-section="${activeSection}"]`);
-        if (btn) showSection(activeSection, btn);
-      }
+      if (activeSection) refreshPanel(activeSection);
       renderHistory();
     } else {
-      const err = document.getElementById('pw-error');
-      err.textContent = 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง';
+      document.getElementById('pw-error').textContent = 'รหัสผ่านไม่ถูกต้อง ลองใหม่อีกครั้ง';
       inp.classList.add('err');
       setTimeout(() => inp.classList.remove('err'), 400);
-      inp.value = '';
-      inp.focus();
+      inp.value = ''; inp.focus();
     }
+  }
+
+  // ── VOTE SETUP ────────────────────────────────────────────────────────────
+  function openVsetup() {
+    const sel = document.getElementById('vote-topic-sel');
+    sel.innerHTML = data.chief.rules.map((r,i) => `<option value="${i}">${esc(r.title)}</option>`).join('');
+    document.getElementById('vote-a').value = '';
+    document.getElementById('vote-b').value = '';
+    document.getElementById('vsetup-overlay').classList.add('open');
+  }
+  function closeVsetup() { document.getElementById('vsetup-overlay').classList.remove('open'); }
+  function vsetupOverlayClick(e) { if (e.target===document.getElementById('vsetup-overlay')) closeVsetup(); }
+
+  function startVote() {
+    const idx = parseInt(document.getElementById('vote-topic-sel').value);
+    const a   = document.getElementById('vote-a').value.trim();
+    const b   = document.getElementById('vote-b').value.trim();
+    if (!a || !b) { alert('กรุณากรอกตัวเลือก A และ B ให้ครบ'); return; }
+    voteState = { ruleIdx: idx, a, b };
+    closeVsetup();
+    runVoteScreen();
+  }
+
+  // ── VOTE COUNTDOWN ────────────────────────────────────────────────────────
+  function runVoteScreen() {
+    const rule = data.chief.rules[voteState.ruleIdx];
+    document.getElementById('vs-title').textContent = rule.title;
+    document.getElementById('vs-a').textContent     = voteState.a;
+    document.getElementById('vs-b').textContent     = voteState.b;
+    document.getElementById('win-a-text').textContent = voteState.a;
+    document.getElementById('win-b-text').textContent = voteState.b;
+    document.getElementById('vs-countdown').textContent = '10';
+    document.getElementById('vs-countdown').classList.remove('urgent');
+    document.getElementById('vs-prompt').textContent   = 'กำลังนับถอยหลัง...';
+    document.getElementById('winner-row').classList.remove('show');
+    document.getElementById('vote-screen').classList.add('open');
+
+    let t = 10;
+    countdownTimer = setInterval(() => {
+      t--;
+      const el = document.getElementById('vs-countdown');
+      el.textContent = t;
+      if (t <= 3) el.classList.add('urgent');
+      if (t <= 0) {
+        clearInterval(countdownTimer);
+        el.textContent = '⏱';
+        el.classList.remove('urgent');
+        document.getElementById('vs-prompt').textContent = 'หมดเวลา! Admin เลือกผู้ชนะ';
+        document.getElementById('winner-row').classList.add('show');
+      }
+    }, 1000);
+  }
+
+  function setWinner(choice) {
+    clearInterval(countdownTimer);
+    const text = choice === 'a' ? voteState.a : voteState.b;
+    data.chief.rules[voteState.ruleIdx].voteResult = text;
+    persist();
+    document.getElementById('vote-screen').classList.remove('open');
+    // refresh panel if chief is shown
+    if (activeSection === 'chief') refreshPanel('chief');
   }
 
   // init
   renderHistory();
 </script>
-
 </body>
 </html>
