@@ -132,9 +132,13 @@
     .vs-lbl{font-size:13px;font-weight:600;color:#c4b5fd;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
     .vs-title{font-size:26px;font-weight:800;color:white;text-align:center;margin-bottom:28px;max-width:680px;}
     .choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:660px;margin-bottom:28px;}
-    .c-card{background:rgba(255,255,255,0.12);border:3px solid rgba(255,255,255,0.2);border-radius:20px;padding:22px 16px;text-align:center;color:white;}
+    .c-card{background:rgba(255,255,255,0.12);border:3px solid rgba(255,255,255,0.2);border-radius:20px;padding:22px 16px;text-align:center;color:white;cursor:pointer;transition:all 0.2s;}
+    .c-card:hover{background:rgba(255,255,255,0.2);transform:scale(1.03);}
+    .c-card.voted{border-color:#fbbf24;background:rgba(251,191,36,0.22);}
+    .c-card.no-vote{cursor:default;} .c-card.no-vote:hover{transform:none;background:rgba(255,255,255,0.12);}
     .c-card .c-lbl{font-size:12px;opacity:0.6;margin-bottom:6px;}
     .c-card .c-txt{font-size:22px;font-weight:800;}
+    .c-votes{font-size:15px;font-weight:800;margin-top:10px;color:#fbbf24;}
     .countdown-num{font-size:86px;font-weight:900;color:#a78bfa;line-height:1;margin-bottom:8px;}
     .countdown-num.urgent{color:#f87171;animation:pulse 0.5s infinite alternate;}
     @keyframes pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
@@ -271,8 +275,8 @@
     <div class="vs-lbl">🗳️ VOTING</div>
     <div class="vs-title" id="cv-title"></div>
     <div class="choices-grid">
-      <div class="c-card"><div class="c-lbl">ตัวเลือก A</div><div class="c-txt" id="cv-a"></div></div>
-      <div class="c-card"><div class="c-lbl">ตัวเลือก B</div><div class="c-txt" id="cv-b"></div></div>
+      <div class="c-card" id="card-a" onclick="voteForChoice('a')"><div class="c-lbl">ตัวเลือก A</div><div class="c-txt" id="cv-a"></div><div class="c-votes" id="cv-votes-a"></div></div>
+      <div class="c-card" id="card-b" onclick="voteForChoice('b')"><div class="c-lbl">ตัวเลือก B</div><div class="c-txt" id="cv-b"></div><div class="c-votes" id="cv-votes-b"></div></div>
     </div>
     <div class="countdown-num" id="cv-num">10</div>
     <div class="vs-prompt" id="cv-prompt">กำลังนับถอยหลัง...</div>
@@ -394,6 +398,7 @@ let isAdmin      = false;
 let activeSec    = null;
 let addTarget    = null;
 let hasJoined    = false;
+let myVote       = null;
 let ticker       = null;
 let fbState      = { status: 'idle' };
 let rulesRef     = null;
@@ -674,7 +679,7 @@ function publishLobby() {
   const a   = document.getElementById('v-a').value.trim();
   const b   = document.getElementById('v-b').value.trim();
   if (!a||!b) { alert('กรุณากรอกตัวเลือก A และ B'); return; }
-  const newState = {status:'lobby', topicTitle:D.chief.rules[idx].title, topicRuleIdx:idx, choiceA:a, choiceB:b, startTime:0, winner:'', participantCount:0};
+  const newState = {status:'lobby', topicTitle:D.chief.rules[idx].title, topicRuleIdx:idx, choiceA:a, choiceB:b, startTime:0, winner:'', participantCount:0, votesA:0, votesB:0};
   if (voteRef) voteRef.set(newState);
   else applyState(newState);
   closeVsetup();
@@ -694,6 +699,17 @@ function joinVote() {
   btn.textContent='✅ เข้าร่วมแล้ว!'; btn.classList.add('joined');
   if (voteRef) voteRef.child('participantCount').transaction(n=>(n||0)+1);
   else { fbState.participantCount=(fbState.participantCount||0)+1; updatePCount(); }
+}
+
+function voteForChoice(c) {
+  if (isAdmin || myVote || fbState.status !== 'voting') return;
+  myVote = c;
+  const field = c === 'a' ? 'votesA' : 'votesB';
+  if (voteRef) voteRef.child(field).transaction(n => (n||0) + 1);
+  else { fbState[field] = (fbState[field]||0) + 1; }
+  const ca = document.getElementById('card-a'), cb = document.getElementById('card-b');
+  if (ca) { ca.classList.toggle('voted', c==='a'); ca.classList.add('no-vote'); }
+  if (cb) { cb.classList.toggle('voted', c==='b'); cb.classList.add('no-vote'); }
 }
 
 function setWinner(c) {
@@ -743,14 +759,14 @@ function applyState(s) {
   updatePCount();
 
   switch(s.status) {
-    case 'lobby':   showLobbySheet(s);  break;
-    case 'voting':  showCountdown(s);   break;
-    case 'done':    showDone(s);        break;
+    case 'lobby':   myVote=null; showLobbySheet(s);  break;
+    case 'voting':  showCountdown(s);                break;
+    case 'done':    showDone(s);                     break;
     default:
       document.getElementById('p-sheet').classList.remove('open');
       document.getElementById('v-overlay').classList.remove('open');
       clearInterval(ticker);
-      hasJoined=false;
+      hasJoined=false; myVote=null;
   }
 }
 
@@ -785,6 +801,22 @@ function showCountdown(s) {
   document.getElementById('cv-b').textContent     = s.choiceB||'';
   document.getElementById('w-a').textContent      = s.choiceA||'';
   document.getElementById('w-b').textContent      = s.choiceB||'';
+  // live vote counts
+  const vaEl = document.getElementById('cv-votes-a');
+  const vbEl = document.getElementById('cv-votes-b');
+  if (vaEl) vaEl.textContent = (s.votesA||0) + ' โหวต';
+  if (vbEl) vbEl.textContent = (s.votesB||0) + ' โหวต';
+  // card interactivity
+  const ca = document.getElementById('card-a'), cb = document.getElementById('card-b');
+  if (ca && cb) {
+    if (isAdmin) { ca.classList.add('no-vote'); cb.classList.add('no-vote'); }
+    else {
+      ca.classList.toggle('voted', myVote==='a');
+      cb.classList.toggle('voted', myVote==='b');
+      if (myVote) { ca.classList.add('no-vote'); cb.classList.add('no-vote'); }
+      else { ca.classList.remove('no-vote'); cb.classList.remove('no-vote'); }
+    }
+  }
   document.getElementById('count-view').style.display = 'flex';
   document.getElementById('done-view').classList.remove('show');
   document.getElementById('winner-row').classList.remove('show');
